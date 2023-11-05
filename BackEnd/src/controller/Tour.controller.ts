@@ -1,6 +1,4 @@
 import express, { NextFunction, Request, Response } from "express";
-import fs from "fs";
-import path from "path";
 import Tour from "../model/Tour.model";
 import User from "../model/User.model";
 import { upload } from "../utils/Multer.utils";
@@ -15,11 +13,11 @@ router.get("/test", (_, res: Response) => {
 })
 
 // create tour
-router.post("/create-tour",upload.array("file"),
+router.post("/create-tour",upload.array("images"),
   asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
       const {name, country, description, destination, aim, price, sold_out, userId} = req.body;
-      const files = req.files || undefined;
+      const files = req.files;
       const ImagesUrl = files.map((file: {location: any}) => {
         return file.location;
       })
@@ -38,11 +36,11 @@ router.post("/create-tour",upload.array("file"),
       
 
       console.log(tourData);
-      const tour = await Tour.create(tourData);
+      const Createtour = await Tour.create(tourData);
 
       res.status(200).json({
           success: true,
-          tour,
+          Createtour,
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500))
@@ -51,28 +49,33 @@ router.post("/create-tour",upload.array("file"),
 ))
 
 // update tour
-router.put("/update-tour",upload.array('images'),
-    isAuthenticated, asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+router.put("/update-tour/:id",upload.array('images'), asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
       try {
-        const files = req.files as Express.Multer.File[];
-        console.log(req.files);
-        const imageUrls = files.map((file: Express.Multer.File) => {
-          return `${file.filename}`;
-        });
+        const tourId = req.params.id;
+        const {name, country, description, destination, aim, price, sold_out, userId} = req.body;
+        const files = req.files;
+        const ImagesUrl = files.map((file: {location: any}) => {
+          return file.location;
+        })
+
+        const user = await User.findOne({userId});
+        const TourData = {
+          name: name,
+          country: country,
+          description: description,
+          destination: destination,
+          aim: aim,
+          price: price,
+          sold_out: sold_out || undefined,
+          images: ImagesUrl,
+          user: user,
+        }
+
+        const updateTour = await Tour.updateOne({ _id: tourId }, TourData);
   
-        const tourData: any = req.body;
-  
-        const currentTour: any = await Tour.findById(tourData.id)!;
-  
-        tourData.images = [...imageUrls, ...currentTour.images];
-  
-        tourData.user = req.user;
-  
-        const tour = await Tour.updateOne({ _id: tourData.id }, tourData);
-  
-        res.status(201).json({
+        res.status(200).json({
           success: true,
-          tour,
+          updateTour,
       });
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
@@ -81,7 +84,7 @@ router.put("/update-tour",upload.array('images'),
 ));
 
 // delete tour
-router.delete("/delete-tour/:id", isAuthenticated, asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+router.delete("/delete-tour/:id", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
   try {
     const tourId = req.params.id;
 
@@ -98,11 +101,14 @@ router.delete("/delete-tour/:id", isAuthenticated, asyncMiddleware(async (req: a
 }));
 
 // get all tour of admin 
-router.get("/get-all-tour-admin/:id", asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
+router.get("/get-all-tour-admin", asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
   try {
-    const tours = await Tour.find({userId: req.params.id});
+    const tours = (await Tour.find({}).populate({
+      path: "reviews",
+      options: { strictPopulate: false },
+    }));
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       tours,
     });
@@ -139,38 +145,5 @@ router.get("/get-tour/:id", asyncMiddleware(async (req:Request, res: Response, n
       return next(new ErrorHandler(error.message, 500))
   }
 }));
-
-
-// create payment
-// router.post("/create-payment-url", function(req: Request, res: Response, next: NextFunction ) {
-//   var ipAdr = req.headers["x-forwarded-for"] || req.connection.remoteAddress ||
-//   req.socket.remoteAddress
-
-
-// })
-
-
-
-function formatDate(n: number) {
-  return (n < 10 ? "0": "") + n;
-}
-
-function dateFormatAll(date: Date) {
-  let dateFormated = date.getFullYear() + formatDate(date.getMonth()+ 1) + formatDate(date.getDay() + 1) 
-  + formatDate(date.getHours()) +  formatDate(date.getMinutes()) + formatDate(date.getSeconds());
-
-  return dateFormated;
-}
-
-
-function dateFormatOrderId (date: Date) {
-  let dateFormated = formatDate(date.getHours()) + formatDate(date.getMinutes()) + formatDate(date.getSeconds());
-  return dateFormated;
-}
-
-
-
-
-
 
 module.exports = router;

@@ -1,5 +1,4 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
-
 export interface TourDocument extends Document {
   name: string;
   country: string;
@@ -8,6 +7,7 @@ export interface TourDocument extends Document {
   aim: string;
   price?: number;
   images: string[];
+  reviews: mongoose.Types.ObjectId[];
   user: object;
   sold_out?: number;
   createAt: Date;
@@ -45,6 +45,13 @@ const tourSchema = new Schema<TourDocument, TourModel>({
       type: String,
     },
   ],
+  reviews: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Review",
+      required: true
+   },
+  ],
   user: {
     type: Object,
     required: true,
@@ -57,6 +64,10 @@ const tourSchema = new Schema<TourDocument, TourModel>({
     type: Date,
     default: Date.now,
   },
-});
+}, 
+// {
+//   strict: false,
+// }
+);
 
 export default mongoose.model<TourDocument, TourModel>("Tour", tourSchema);

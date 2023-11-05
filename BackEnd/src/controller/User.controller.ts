@@ -51,13 +51,14 @@ router.post("/create-user", upload.single("avatar"), asyncMiddleware(async (req:
             email: user.email,
             subject: "Activate you account",
             message: `
-            <h1>Account Activation</h1>
-            <p>Hello ${user.name},</p>
-            <p>Please click on the link below to activate your account:</p>
-            <p><a href="${activationUrl}">Click here to create your account !! </a></p>
-            <p>Thank you for joining our service.</p>
-            <p>Best regards,</p>
-            <p>Love Travel </p>
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7f7f7;">
+            <h1 style="font-size: 24px; margin-top: 0;">Account Activation</h1>
+            <p style="font-size: 16px; margin-bottom: 10px;">Hello ${user.name},</p>
+            <p style="font-size: 16px; margin-bottom: 10px;">Please click on the link below to activate your account:</p>
+            <p><a href="${activationUrl}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Click here to create your account!!</a></p>
+            <p style="font-size: 16px; margin-bottom: 10px;">Thank you for joining our service.</p>
+            <p style="font-size: 16px; margin-bottom: 10px;">Best regards,</p>
+            <p style="font-size: 16px; margin-bottom: 10px;">Love Travel</p></div>
           `,
           });
         } catch (error: any) {

@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import Tour from "../model/Tour.model";
+import User from "../model/User.model";
 import { upload } from "../utils/Multer.utils";
 import asyncMiddleware from "../middleware/CatchAsyncError.middleware";
 import ErrorHandler from "../utils/ErrorHandler.utils";
@@ -14,19 +15,29 @@ router.get("/test", (_, res: Response) => {
 })
 
 // create tour
-router.post("/create-tour",upload.array("images"),
+router.post("/create-tour",upload.array("file"),
   asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
-      const files = (req.files as Express.Multer.File[]) || [];
-      const imageUrls = files.map((file) => {
-          return `${file.filename}`;
-      });
-      const tourData = req.body;
+      const {name, country, description, destination, aim, price, sold_out, userId} = req.body;
+      const files = req.files || undefined;
+      const ImagesUrl = files.map((file: {location: any}) => {
+        return file.location;
+      })
+      const user = await User.findOne({userId});
+      const tourData = {
+        name: name,
+        country: country,
+        description: description,
+        destination: destination,
+        aim: aim,
+        price: price,
+        sold_out: sold_out || undefined,
+        images: ImagesUrl,
+        user: user,
+      }
+      
 
-      tourData.images = req.files?.location;
-      tourData.user = req.user;
-
-      console.log(Tour);
+      console.log(tourData);
       const tour = await Tour.create(tourData);
 
       res.status(200).json({

@@ -7,9 +7,7 @@ export interface TourDocument extends Document {
   destination: string;
   aim: string;
   price?: number;
-  color: string;
   images: string[];
-  userId: any;
   user: object;
   sold_out?: number;
   createAt: Date;
@@ -40,20 +38,13 @@ const tourSchema = new Schema<TourDocument, TourModel>({
   },
   price: {
     type: Number,
-  },
-  color: {
-    type: String,
-    required: [true, "Please enter your main color name"],
+    required:[true, "Plaese enter your tour price"],
   },
   images: [
     {
       type: String,
     },
   ],
-  userId: {
-    type: String,
-    required: true,
-  },
   user: {
     type: Object,
     required: true,
@@ -69,6 +60,3 @@ const tourSchema = new Schema<TourDocument, TourModel>({
 });
 
 export default mongoose.model<TourDocument, TourModel>("Tour", tourSchema);
-
-
-// export CRUD Tour

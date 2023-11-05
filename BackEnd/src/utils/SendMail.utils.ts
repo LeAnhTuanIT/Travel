@@ -1,0 +1,52 @@
+import nodemailer, { TransportOptions } from "nodemailer";
+import fs from "fs";
+import path from "path";
+
+interface Attachment {
+  filename: string;
+  path: string;
+}
+
+const sendMail = async (option: {
+  email: string;
+  subject: string;
+  message: string;
+  attachment?: Attachment;
+}): Promise<void> => {
+  console.log("start send email");
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMPT_HOST,
+    port: process.env.SMPT_PORT,
+    service: "gmail",
+    auth: {
+      user: process.env.SMPT_MAIL,
+      pass: process.env.SMPT_PASSWORD,
+    },
+  } as TransportOptions);
+
+  const imagePath = path.join(__dirname, "../assets/", "logo.png");
+  const imageContent = fs.readFileSync(imagePath, { encoding: "base64" });
+
+  const htmlImage = `<img src="data:image/jpeg;base64,${imageContent}" 
+  alt="Image" style="display: block; margin-top: 20px;">`;
+  const mailOption = {
+    from: process.env.SMPT_MAIL,
+    to: option.email,
+    subject: option.subject,
+    html: option.message + htmlImage,
+    attachments: [option.attachment].filter(Boolean) as Attachment[],
+  };
+
+  await transporter.sendMail(mailOption, (err, info: any) => { 
+    // Specify the type of 'info' as 'any' for now
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Email sent: " + info?.response); 
+      // Access the response property using optional chaining
+    }
+  });
+};
+
+export default sendMail;

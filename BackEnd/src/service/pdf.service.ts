@@ -1,7 +1,7 @@
 import PDFDocument from "pdfkit";
 import fs from "fs";
 
-const fontPath = "BackEnd/src/assets/font/arial-unicode-ms.ttf";
+const fontPath: string = "./src/assets/font/Arial-Unicode-MS.ttf";
 const fontBuffer = fs.readFileSync(fontPath);
 
 interface Invoice {

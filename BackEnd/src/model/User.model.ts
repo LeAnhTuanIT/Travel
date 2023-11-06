@@ -3,18 +3,18 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export interface UserDocument extends Document {
-  name: string;
-  phoneNumber: string;
-  email: string;
-  password: string;
-  address?: string;
-  role: string;
-  avatar: string;
-  createdAt: Date;
-  resetPasswordToken?: string;
-  resetPasswordTime?: Date;
-  getJwtToken: () => string;
-  comparePassword: (enteredPassword: string) => Promise<boolean>;
+  name: string,
+  phoneNumber: string,
+  email: string,
+  password: string,
+  address?: string,
+  role: string,
+  avatar: string,
+  createdAt: Date,
+  resetPasswordToken?: string,
+  resetPasswordTime?: Date,
+  getJwtToken: () => string,
+  comparePassword: (enteredPassword: string) => Promise<boolean>,
 }
 
 export interface UserModel extends Model<UserDocument> {}

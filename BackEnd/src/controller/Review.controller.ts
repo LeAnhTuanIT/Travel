@@ -23,7 +23,6 @@ router.post("/create-review", asyncMiddleware(async (req: any, res: Response, ne
             user: user,
 
         }
-        console.log(reviewData);
         const createReview = await Review.create(ReviewData);
 
         const SummitTour = await Tour.findOneAndUpdate(tourId, {

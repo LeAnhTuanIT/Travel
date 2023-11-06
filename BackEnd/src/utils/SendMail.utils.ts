@@ -28,7 +28,7 @@ const sendMail = async (option: {
   const imagePath = path.join(__dirname, "../assets/", "logo.png");
   const imageContent = fs.readFileSync(imagePath, { encoding: "base64" });
 
-  const htmlImage = `<img src="data:image/jpeg;base64,${imageContent}" 
+  const htmlImage = `<img src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/travel-website/logo.png" 
   alt="Image" style="display: block; margin-top: 20px;">`;
   const mailOption = {
     from: process.env.SMPT_MAIL,

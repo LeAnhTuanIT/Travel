@@ -3,8 +3,13 @@ import Tour from "../model/Tour.model";
 import User from "../model/User.model";
 import { upload } from "../utils/Multer.utils";
 import asyncMiddleware from "../middleware/CatchAsyncError.middleware";
-import ErrorHandler from "../utils/ErrorHandler.utils";
+import errorHandler from "../utils/ErrorHandler.utils";
 import isAuthenticated from "../middleware/Authorization.middleware";
+import {FormatAllDate, FormatDateOrderId} from "../middleware/Format.middlewarre";
+import queryString from "qs"
+import crypto from "crypto"
+import config from "config"
+
 
 const router = express.Router();
 // test API tour
@@ -43,7 +48,7 @@ router.post("/create-tour",upload.array("images"),
           Createtour,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500))
+      return next(new errorHandler(error.message, 500))
     }
   }
 ))
@@ -78,7 +83,7 @@ router.put("/update-tour/:id",upload.array('images'), asyncMiddleware(async (req
           updateTour,
       });
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(new errorHandler(error.message, 500));
     }
   }
 ));
@@ -96,7 +101,7 @@ router.delete("/delete-tour/:id", asyncMiddleware(async (req: any, res: Response
       deleteTour
     });
   } catch (error: any) {
-    return next(new ErrorHandler(error.message, 500))
+    return next(new errorHandler(error.message, 500))
   }  
 }));
 
@@ -113,7 +118,7 @@ router.get("/get-all-tour-admin", asyncMiddleware(async (req:Request, res: Respo
       tours,
     });
   } catch (error: any) {
-    return next(new ErrorHandler(error.message, 500));
+    return next(new errorHandler(error.message, 500));
   }}
 ));
 
@@ -122,28 +127,199 @@ router.get("/get-all-tour", asyncMiddleware(async (req:Request, res: Response, n
     try {
       const limit = 48;
 
-      const tours = await Tour.find({}).sort({createAt: -1}).limit(limit);
+      const tours = await Tour.find({}).populate({ path: "reviews",
+      options: { strictPopulate: false },}).sort({createAt: -1}).limit(limit);
 
       res.status(200).json({
         success: true,
         tours,
       })
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500));
+      return next(new errorHandler(error.message, 500));
     }
 }))
 
 // get tour
 router.get("/get-tour/:id", asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
   try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.id).populate({ path: "reviews",
+    options: { strictPopulate: false },});
       res.status(200).json({
         success: true,
         tour
       })
   } catch (error: any) {
-      return next(new ErrorHandler(error.message, 500))
+      return next(new errorHandler(error.message, 500))
   }
 }));
 
+
+// Payment tour
+router.post("/create-payment-tour", function(req: any, res: Response, next: NextFunction){
+    // var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
+    // var tmnCode: string | undefined = process.env.VNP_TMNCODE;
+    // var secretKey: string | undefined = process.env.VPN_HASHSECRET;
+    // var VNP_Url: string | undefined = process.env.VNP_URL;
+    // var ReturnUrl: string| undefined = process.env.VNP_RETURN_URL;
+    
+    // var date = new Date();
+    // var createDate: string = FormatAllDate(date);
+    // var orderId: string= FormatDateOrderId(date);
+    // var amount: number = req.body.amount;
+    // var tourId: string = req.body.tourId;
+    // var userId: string = req.body.userId;
+    // var bankcode: string =  "";
+    // var orderInfo: string = req.body.orderDescription;
+    // var quantity: number = req.body.quantily;
+
+
+    // var locale: string = req.body.language;
+    // if(locale === null || locale === "") {
+    // locale = "vn";
+    // } 
+
+    // var currCode: string = "VND";
+    // var VNP_Params: any = {};
+
+    // VNP_Params["vnp_Version"] = "2.1.0";
+    // VNP_Params["vnp_Command"] = "pay";
+    // VNP_Params["vnp_TmnCode"] = tmnCode;
+    // // vnp_Params['vnp_Merchant'] = ''
+    // VNP_Params["vnp_Locale"] = locale;
+    // VNP_Params["vnp_CurrCode"] = currCode;
+    // VNP_Params["vnp_TxnRef"] = orderId;
+    // VNP_Params["vnp_OrderInfo"] = orderInfo;
+    // VNP_Params["vnp_OrderType"] = "other";
+    // VNP_Params["vnp_Amount"] = amount * 100;
+    // VNP_Params["vnp_ReturnUrl"] = ReturnUrl + `?tourId=${tourId}&userId=${userId}&quantity=${quantity}`;
+    // VNP_Params["vnp_IpAddr"] = ipAdr;
+    // VNP_Params["vnp_Locale"] = "vn"; 
+    // VNP_Params["vnp_CreateDate"] = createDate;
+    // if (bankcode !== null && bankcode !== "") {
+    //   VNP_Params["vnp_BankCode"] = bankcode;
+    // }
+
+
+    var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
+    var tmnCode: string | undefined = process.env.VNP_TMNCODE;
+    var secretKey: string | undefined = process.env.VPN_HASHSECRET;
+    var VNP_Url: string | undefined = process.env.VNP_URL;
+    var ReturnUrl: string | undefined = process.env.VNP_RETURN_URL;
+
+    var date = new Date();
+    var createDate: string = FormatAllDate(date);
+    var orderId: string = FormatDateOrderId(date);
+    var amount: string = (req.body.amount * 100).toFixed(0); // Định dạng số tiền theo yêu cầu của VNPAY
+    var tourId: string = req.body.tourId;
+    var userId: string = req.body.userId;
+    var bankcode: string = "";
+    var orderInfo: string = req.body.orderDescription;
+    var quantity: number = req.body.quantily;
+
+    var locale: string = req.body.language;
+    if (locale === null || locale === "") {
+      locale = "vn";
+    }
+
+    // Các thuộc tính phù hợp với định dạng của VNPAY
+    var currCode: string = "VND";
+    var vnp_Version: string = "2.1.0";
+    var vnp_Command: string = "pay";
+    var vnp_OrderType: string = "other";
+
+    // Tạo đối tượng VNP_Params và định dạng các thuộc tính
+    var VNP_Params: any = {
+      vnp_Version: vnp_Version,
+      vnp_Command: vnp_Command,
+      vnp_TmnCode: tmnCode,
+      vnp_Locale: locale,
+      vnp_CurrCode: currCode,
+      vnp_TxnRef: orderId,
+      vnp_OrderInfo: orderInfo,
+      vnp_OrderType: vnp_OrderType,
+      vnp_Amount: amount,
+      vnp_ReturnUrl: ReturnUrl + `?tourId=${tourId}&userId=${userId}&quantity=${quantity}`,
+      vnp_IpAddr: ipAdr,
+      vnp_CreateDate: createDate,
+    };
+
+    if (bankcode !== null && bankcode !== "") {
+      VNP_Params["vnp_BankCode"] = bankcode;
+    }
+
+
+    var signData = queryString.stringify(VNP_Params, {encode: true});
+    if(!secretKey) {
+      throw new Error('secretKey environment variable is not defined.');
+    }
+    var hmac = crypto.createHmac("sha512", secretKey);
+    var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
+    VNP_Params["vnp_SecureHash"] = signed;
+    VNP_Url += "?" + queryString.stringify(VNP_Params, {encode: true});
+
+    res.status(201).json({
+      success: true,
+      VNP_Url,
+    })
+    if(!VNP_Url) {
+      throw new Error("VNPAY URL envirionment variable is not defined");
+    }
+    res.redirect(VNP_Url);
+
+});
+
+
+// success payment
+router.get("/success_payment", function(req: Request, res: Response, next: NextFunction) {
+    var VNP_Params: any = req.body;
+    
+    var secureHash: string = VNP_Params["vnp_SecureHash"];
+    delete VNP_Params["vnp_SecureHash"];
+    delete VNP_Params["vnp_SecureHashType"];
+    var tmnCode: string = config.get("vnp_TmnCode");
+    var secretKey: string = config.get("vnp_HashSecret");
+
+    var singData = queryString.stringify(VNP_Params, {encode: true});
+
+    if(!secretKey) {
+      throw new Error('secretKey environment variable is not defined.');
+    }
+    
+    var hmac = crypto.createHmac("sha512",secretKey);
+    var signed = hmac.update(Buffer.from(singData, "utf-8")).digest("hex");
+    
+    if(secureHash === signed) {
+      // Kiem tra
+      res.render("success", {code: VNP_Params["vnp_ResponseCode"]});
+    } else {
+    res.render("success", {code: "97"});
+    }
+});
+
+
+// get vnp
+router.get("/pay_ipn", function (req: Request, res: Response, next: NextFunction) {
+  var vnp_Params = req.query;
+  var secureHash = vnp_Params["np_SecureHash"];
+
+  delete vnp_Params["vnp_SecureHash"];
+  delete vnp_Params["vnp_SecureHashType"];
+
+  var secretKey = process.env.VPN_HASHSECRET;
+  var signData = queryString.stringify(vnp_Params, {encode: false});
+  if(!secretKey) {
+    throw new Error('secretKey environment variable is not defined.');
+  }
+  var hmac = crypto.createHmac("sha512", secretKey);
+  var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
+  if (secureHash === signed) {
+    var orderId = vnp_Params["vnp_TxnRef"];
+    var rspCode = vnp_Params["vnp_ResponseCode"];
+    //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+    res.status(200).json({ RspCode: "00", Message: "success" });
+  } else {
+    res.status(200).json({ RspCode: "97", Message: "Fail checksum" });
+  }
+
+})
 module.exports = router;

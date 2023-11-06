@@ -1,16 +1,16 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 export interface TourDocument extends Document {
   name: string;
-  country: string;
-  description: string;
-  destination: string;
-  aim: string;
-  price?: number;
-  images: string[];
-  reviews: mongoose.Types.ObjectId[];
-  user: object;
-  sold_out?: number;
-  createAt: Date;
+  country: string,
+  description: string,
+  destination: string,
+  aim: string,
+  price?: number,
+  images: string[],
+  reviews: mongoose.Types.ObjectId[],
+  user: object,
+  sold_out?: number,
+  createAt: Date,
 }
 
 export interface TourModel extends Model<TourDocument> {}
@@ -64,10 +64,6 @@ const tourSchema = new Schema<TourDocument, TourModel>({
     type: Date,
     default: Date.now,
   },
-}, 
-// {
-//   strict: false,
-// }
-);
+});
 
 export default mongoose.model<TourDocument, TourModel>("Tour", tourSchema);

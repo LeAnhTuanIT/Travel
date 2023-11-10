@@ -1,6 +1,11 @@
+import React from 'react'
 
-export default function Tour() {
-    return(
-        <h2>Wellcom to tour</h2>
-    )
+const Tours = () => {
+  return (
+    <div>
+      Tours
+    </div>
+  )
 }
+
+export default Tours

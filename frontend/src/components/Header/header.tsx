@@ -3,17 +3,21 @@ import Link from "next/link"
 import Image from "next/image"
 import {Container, Row, Col} from "reactstrap"
 import { Nav__link } from "@/constants"
+import "./style.module.scss"
+
+
 
 const Header = () => {
   return (
    <Container className="text-center items-center justify-between">
     <Row className="">
         <Col lg="2">
-            <Link href={"/vercel.svg"}>
-                <Image src={""}
+            <Link href={"/"}>
+                <Image src={"next.svg"}
                 width={100}
                 height={100}
-                alt="logo-image"/>
+                alt="logo-image"
+                className="mt-4"/>
             </Link>
         </Col>
         <Col lg = "8" className="justify-items-center">
@@ -28,10 +32,15 @@ const Header = () => {
             }
             </ul>
         </Col>
-        <Col lg= "2" className="">
-          <div className="mt-4">
+        <Col lg= "2" className="flex">
+          <div className="mt-4 mx-4">
             <Link href={"/login"} className="">
                 Login
+            </Link>
+          </div>
+          <div className="mt-4">
+            <Link href={"/login"} className="">
+                Regsiter
             </Link>
           </div>
         </Col>

@@ -10,6 +10,7 @@ import base64url from "base64url";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import sendToken from "../utils/JwtToken.utils";
 import isAuthenticated from "../middleware/Authorization.middleware";
+// const isAuthenticated = require("../middleware/Authorization.middleware");
 
 const createActivationToken = require("../helper/Hash.helper");
 
@@ -141,22 +142,26 @@ router.post("/login-user", asyncMiddleware(async (req: Request, res: Response, n
 }));
 
 // load user
-router.get("/get-user",isAuthenticated,asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
+router.get(
+  "/getuser",
+  isAuthenticated,
+  asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+    // router.get("/getuser", catchAsyncError(async (req,res,next) => {
     try {
-        const token: string | undefined  = req.headers.authorization;
-        const user = await User.findById(req.body);
-        if (!user) {
-          return next(new ErrorHandler("User doesn't exists", 400));
-        }
-  
-        res.status(200).json({
-          success: true,
-          user,
-        });
+      const token = req.headers;
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return next(new ErrorHandler("User doesn't exists", 400));
+      }
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
     } catch (error: any) {
-        return next(new ErrorHandler(error.message, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
-    
-}))
+  })
+);
 
 module.exports = router;

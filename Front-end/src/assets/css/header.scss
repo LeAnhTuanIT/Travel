@@ -1,0 +1,420 @@
+.header {
+  height: 130px;
+}
+
+.header-sub {
+  height: 50px;
+  background-color: #434a54;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.header-sub-container {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  min-width: 1150px;
+  background-color: #4a515b;
+}
+
+.header-information {
+  display: flex;
+  margin-top: 16px;
+}
+
+.header-options {
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  margin: 0 8px;
+  font-weight: 200;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.header-term {
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  margin: 0 12px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.header-place {
+  color: #fff;
+  font-size: 13px;
+  margin: 0 8px;
+  text-decoration: none;
+  font-weight: 300;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.header-user {
+  display: flex;
+}
+
+.header-booking {
+  margin: 16px 10px 0;
+  cursor: pointer;
+}
+
+.header-mail {
+  margin: 16px 10px 0;
+  position: relative;
+  width: 16px;
+  height: 34px;
+}
+
+.header-mail-notice {
+  padding: 1px 3px;
+  background-color: #1bbc9b;
+  position: absolute;
+  color: #fff;
+  font-size: 10px;
+  right: -6px;
+  top: -8px;
+  font-weight: 500;
+}
+
+.header-review {
+  margin: 16px 20px 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: #fff;
+}
+
+.header-account {
+  margin: 8px 20px 0;
+  display: flex;
+  cursor: pointer;
+}
+
+.header-account-avatar {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.header-account-undefine {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-right: 8px;
+  cursor: pointer;
+  padding: 5px;
+  background: black;
+}
+
+.header-account-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-account-name {
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 4px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.header-account-status {
+  color: #fff;
+  font-size: 10px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.header-solid-color {
+  height: 3px;
+  width: 100%;
+  float: left;
+  background: linear-gradient(
+    to right,
+    #f76570 0%,
+    #f76570 8%,
+    #f3a46b 8%,
+    #f3a46b 16%,
+    #f3a46b 16%,
+    #ffd205 16%,
+    #ffd205 24%,
+    #ffd205 24%,
+    #1bbc9b 24%,
+    #1bbc9b 25%,
+    #1bbc9b 32%,
+    #14b9d5 32%,
+    #14b9d5 40%,
+    #c377e4 40%,
+    #c377e4 48%,
+    #f76570 48%,
+    #f76570 56%,
+    #f3a46b 56%,
+    #f3a46b 64%,
+    #ffd205 64%,
+    #ffd205 72%,
+    #1bbc9b 72%,
+    #1bbc9b 80%,
+    #14b9d5 80%,
+    #14b9d5 80%,
+    #14b9d5 89%,
+    #c377e4 89%,
+    #c377e4 100%
+  );
+}
+
+.header-mail-show {
+  display: block;
+  scale: 0;
+  flex-direction: column;
+  background-color: #434a54;
+  margin-top: 20px;
+  position: absolute;
+  min-width: 230px;
+  right: -107px;
+  z-index: 999;
+  transition: all 0.5s;
+  transform-origin: top;
+}
+
+.header-mail:hover .header-mail-show {
+  scale: 1;
+}
+
+.header-show-content:first-child::after {
+  content: "";
+  border-width: 13px 14px;
+  border-style: solid;
+  border-color: #434a54 transparent;
+  position: absolute;
+  right: 101px;
+  top: -21px;
+}
+
+.header-show-content:first-child::before {
+  content: "";
+  border-width: 25px 35px;
+  border-style: solid;
+  border-color: transparent;
+  position: absolute;
+  top: -47px;
+}
+
+.header-show-content {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.header-show-img {
+  height: 50px;
+  width: 50px;
+}
+
+.header-show-main {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  min-width: 140px;
+}
+
+.header-main-content {
+  color: #fff;
+  font-size: 13px;
+  margin-top: 4px;
+  text-decoration: none;
+}
+
+.header-main-detail {
+  color: #fff;
+  font-size: 10px;
+  margin-top: 8px;
+  text-decoration: none;
+}
+
+.header-main-container {
+  padding: 25px 15px 15px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-main-img {
+  height: 22px;
+  width: 136px;
+}
+
+.header-main-close-item {
+  display: none;
+}
+
+.header-main-content-menu {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.header-content-container {
+  padding: 0px 10px 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.header-content-main:hover .header-content-detail {
+  background-color: black;
+}
+
+.header-content-container::after {
+  content: "";
+  border-right: 2px solid #999;
+  margin-left: 30px;
+}
+
+.header-content-main {
+  color: #5e6d81;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.header-content-container:hover > .header-content-detail {
+  display: flex;
+  opacity: 1;
+  scale: 1;
+}
+
+.header-content-booking {
+  padding: 4px 12px;
+  font-size: 11px;
+  background-color: #f3a46b;
+  cursor: pointer;
+}
+
+.header-content-detail {
+  display: block;
+  opacity: 0;
+  scale: 0;
+  flex-direction: column;
+  min-width: 190px;
+  margin: 32px;
+  position: absolute;
+  right: -50%;
+  transition: 0.5s all;
+  transform-origin: top;
+}
+
+.header-content-detail::before {
+  content: "";
+  width: 100%;
+  height: 40px;
+  position: absolute;
+  top: -36px;
+  z-index: 999;
+}
+
+.header-content-detail:first-child {
+  border-top: 1px solid #f1f1f1;
+  box-shadow: 0px 2px 5px #f1f1f1;
+}
+
+.header-content-detail:last-child {
+  border-bottom: 1px solid #f1f1f1;
+  box-shadow: 0px 2px 5px #f1f1f1;
+}
+
+.header-content-word {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  color: #5e6d81;
+  padding: 15px 20px;
+  font-size: 14px;
+  float: left;
+  width: 100%;
+  border-bottom: 2px solid #f1f1f1;
+  background-color: #fff;
+  text-decoration: none;
+  z-index: 999;
+}
+
+.header-content-word:hover > .header-content-more {
+  display: flex;
+}
+
+.header-content-more {
+  display: none;
+  flex-direction: column;
+  min-width: 190px;
+  position: absolute;
+  top: 0;
+  left: 210px;
+  background-color: #fff;
+}
+
+.header-content-more::after {
+  content: "";
+  position: absolute;
+  height: 100px;
+  width: 20px;
+  left: -20px;
+}
+
+.header-content-more:last-child {
+  border-top: 1px solid #f1f1f1;
+  box-shadow: 0px 2px 5px #f1f1f1;
+}
+
+.header-content-more:first-child {
+  border-bottom: 1px solid #f1f1f1;
+  box-shadow: 0px 2px 5px #f1f1f1;
+}
+
+.header-more-detail {
+  color: #5e6d81;
+  padding: 15px 20px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  float: left;
+  position: relative;
+  transition: all 0.5s;
+}
+
+.header-content-word {
+  transition: all 0.5s;
+}
+.header-more-detail:hover {
+  background-color: #f9f9f9;
+  color: #ccc;
+}
+
+.header-content-word:hover {
+  background-color: #f9f9f9;
+  color: grey;
+}
+
+.header-main-icon {
+  display: none;
+  font-size: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+@keyframes menu {
+  from {
+    right: -300px;
+  }
+  to {
+    right: 0;
+  }
+}

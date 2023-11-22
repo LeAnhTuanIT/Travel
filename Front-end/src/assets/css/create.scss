@@ -1,0 +1,45 @@
+.create-label-container {
+  margin-bottom: 76px;
+  margin-top: 76px;
+  border: 1px solid #f7f7f7;
+  padding: 20px;
+  display: block; }
+
+.create-label-item {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between; }
+
+.create-label-input {
+  width: 100%;
+  background-color: #f9f9f9;
+  border-width: 1px;
+  border-color: #f1f1f1;
+  border-radius: 0px;
+  border-style: solid;
+  padding: 10px 20px;
+  -webkit-appearance: none;
+  color: #a3a3a3; }
+
+.create-label-select {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 20px; }
+
+.create-label-control {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #f9f9f9;
+  border: none;
+  padding: 10px 20px; }
+
+.create-label-submit {
+  padding: 10px 20px;
+  background-color: #1bbc9b;
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer; }

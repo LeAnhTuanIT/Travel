@@ -3,6 +3,7 @@ import Payment from "../model/Payment.model";
 import User from "../model/User.model";
 import Tour from "../model/Tour.model";
 import asyncMiddleware from "../middleware/CatchAsyncError.middleware";
+// const asyncMiddleware = require("../middleware/CatchAsyncError.middleware");
 import ErrorHandler from "../utils/ErrorHandler.utils";
 import sendMail from "../utils/SendMail.utils";
 
@@ -54,7 +55,7 @@ router.post(
           subject: 'Departure Schedule Information',
           message: `
           <h1>Successful Booking Notification</h1>
-          <p>Dear ${user.email},</p>
+          <p>Dear ${user.name},</p>
           <p>Your booking has been successfully confirmed, and We will notify you of the departure date via phone number.</p>
           <p>Thank you for choosing our service.</p>
           <p>Best regards,</p>

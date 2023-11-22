@@ -1,0 +1,30 @@
+@media (max-width: 799px) {
+  .item-feature {
+    flex-direction: column;
+    width: 75%;
+    bottom: -25%; }
+  .item-feature-content,
+  .item-feature-price {
+    width: 100%; }
+  .item-feature-sub {
+    -webkit-line-clamp: 4; }
+  .item-header {
+    margin-bottom: 350px; }
+  .item-contact-content {
+    margin-top: 30px; }
+  .item-content-container {
+    width: 100%; }
+  .item-include {
+    margin: 64px 0; }
+  .item-package-day {
+    border-bottom: none; }
+  .item-package-icon {
+    width: 40px;
+    font-size: 25px; }
+  .item-head {
+    margin-left: 15px; }
+  .main-label-container {
+    display: flex;
+    flex-direction: column; }
+  .item-content-contact {
+    padding: 0; } }

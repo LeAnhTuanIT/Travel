@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap; }
+
+.available-icon {
+  opacity: .8; }
+
+.mt-3 {
+  width: calc(100% / 4);
+  margin: 0 auto;
+  padding: 0 5px; }
+
+.mt-4 {
+  width: calc(100% / 3);
+  margin: 0 auto;
+  padding: 0 5px; }
+
+.mt-6 {
+  width: 45%;
+  margin: 0 16px; }
+
+.mt-8 {
+  width: calc(100% * 2/3);
+  margin: 0 auto; }
+
+.mt-9 {
+  width: 75%;
+  margin: 0 auto; }
+
+.mt-10 {
+  width: 83.333%;
+  margin: 0 auto; }
+
+@media (min-width: 800px) and (max-width: 1200px) {
+  .mb-9 {
+    width: 75%;
+    margin: 0 auto; }
+  .mb-10 {
+    width: 83.333%;
+    margin: 0 auto; }
+  .mb-12 {
+    width: 100%;
+    margin: 15px; } }
+
+@media (max-width: 799px) {
+  html {
+    overflow-x: hidden; }
+  body {
+    overflow-x: hidden; }
+  .m-12 {
+    width: 100%;
+    margin: 0 auto; }
+  .m-10 {
+    width: 83.333%;
+    margin: 0 auto; }
+  .m-9 {
+    width: 75%;
+    margin: 0 auto; }
+  .m-6 {
+    width: 50%;
+    margin: 0 auto; }
+  .m-w-100 {
+    width: 100% !important; } }
+
+.disable {
+  display: none; }
+
+.active-option {
+  background-color: #5CC08A; }
+
+.not-active-option {
+  background-color: #f76570 !important; }

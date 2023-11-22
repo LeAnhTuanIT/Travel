@@ -5,10 +5,31 @@ import { upload } from "../utils/Multer.utils";
 import asyncMiddleware from "../middleware/CatchAsyncError.middleware";
 import errorHandler from "../utils/ErrorHandler.utils";
 import isAuthenticated from "../middleware/Authorization.middleware";
+// const isAuthenticated = require("../middleware/Authorization.middleware");
 import {FormatAllDate, FormatDateOrderId} from "../middleware/Format.middlewarre";
 import queryString from "qs"
 import crypto from "crypto"
 import config from "config"
+
+const sortObject = require("sort-object");
+
+
+function pad2(n: number) {
+  return (n < 10 ? "0" : "") + n;
+}
+
+
+function dateFormatAll(date: Date) {
+  let dateFormated =
+    date.getFullYear() +
+    pad2(date.getMonth() + 1) +
+    pad2(date.getDate()) +
+    pad2(date.getHours()) +
+    pad2(date.getMinutes()) +
+    pad2(date.getSeconds());
+
+  return dateFormated;
+}
 
 
 const router = express.Router();
@@ -156,65 +177,68 @@ router.get("/get-tour/:id", asyncMiddleware(async (req:Request, res: Response, n
 
 // Payment tour
 router.post("/create-payment-tour", function(req: any, res: Response, next: NextFunction){
-    // var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
-    // var tmnCode: string | undefined = process.env.VNP_TMNCODE;
-    // var secretKey: string | undefined = process.env.VPN_HASHSECRET;
-    // var VNP_Url: string | undefined = process.env.VNP_URL;
-    // var ReturnUrl: string| undefined = process.env.VNP_RETURN_URL;
-    
-    // var date = new Date();
-    // var createDate: string = FormatAllDate(date);
-    // var orderId: string= FormatDateOrderId(date);
-    // var amount: number = req.body.amount;
-    // var tourId: string = req.body.tourId;
-    // var userId: string = req.body.userId;
-    // var bankcode: string =  "";
-    // var orderInfo: string = req.body.orderDescription;
-    // var quantity: number = req.body.quantily;
-
-
-    // var locale: string = req.body.language;
-    // if(locale === null || locale === "") {
-    // locale = "vn";
-    // } 
-
-    // var currCode: string = "VND";
-    // var VNP_Params: any = {};
-
-    // VNP_Params["vnp_Version"] = "2.1.0";
-    // VNP_Params["vnp_Command"] = "pay";
-    // VNP_Params["vnp_TmnCode"] = tmnCode;
-    // // vnp_Params['vnp_Merchant'] = ''
-    // VNP_Params["vnp_Locale"] = locale;
-    // VNP_Params["vnp_CurrCode"] = currCode;
-    // VNP_Params["vnp_TxnRef"] = orderId;
-    // VNP_Params["vnp_OrderInfo"] = orderInfo;
-    // VNP_Params["vnp_OrderType"] = "other";
-    // VNP_Params["vnp_Amount"] = amount * 100;
-    // VNP_Params["vnp_ReturnUrl"] = ReturnUrl + `?tourId=${tourId}&userId=${userId}&quantity=${quantity}`;
-    // VNP_Params["vnp_IpAddr"] = ipAdr;
-    // VNP_Params["vnp_Locale"] = "vn"; 
-    // VNP_Params["vnp_CreateDate"] = createDate;
-    // if (bankcode !== null && bankcode !== "") {
-    //   VNP_Params["vnp_BankCode"] = bankcode;
-    // }
-
-
     var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
     var tmnCode: string | undefined = process.env.VNP_TMNCODE;
     var secretKey: string | undefined = process.env.VPN_HASHSECRET;
     var VNP_Url: string | undefined = process.env.VNP_URL;
-    var ReturnUrl: string | undefined = process.env.VNP_RETURN_URL;
-
+    var ReturnUrl: string| undefined = process.env.RETURN_URL;
     var date = new Date();
-    var createDate: string = FormatAllDate(date);
-    var orderId: string = FormatDateOrderId(date);
-    var amount: string = (req.body.amount * 100).toFixed(0); // Định dạng số tiền theo yêu cầu của VNPAY
+    var createDate: string = dateFormatAll(date);
+    var orderId: string= FormatDateOrderId(date);
+    var amount: number = req.body.amount;
     var tourId: string = req.body.tourId;
     var userId: string = req.body.userId;
-    var bankcode: string = "";
+    var bankcode: string =  "";
     var orderInfo: string = req.body.orderDescription;
-    var quantity: number = req.body.quantily;
+    var quantity: number = Number(req.body.quantity);
+    var currCode: string = "VND";
+    var VNP_Params: any = {};
+    var currCode: string = "VND";
+    var vnp_Version: string = "2.1.0";
+    var vnp_Command: string = "pay";
+    var vnp_OrderType: string = "other";
+    var locale: string = req.body.language;
+    if(locale === null || locale === "") {
+    locale = "vn";
+    } 
+
+    
+
+    VNP_Params["vnp_Version"] = vnp_Version;
+    VNP_Params["vnp_Command"] = vnp_Command;
+    VNP_Params["vnp_TmnCode"] = tmnCode;
+    // VNP_Params['vnp_Merchant'] = ''
+    VNP_Params["vnp_Locale"] = locale;
+    VNP_Params["vnp_CurrCode"] = currCode;
+    VNP_Params["vnp_TxnRef"] = orderId;
+    VNP_Params["vnp_OrderInfo"] = orderInfo;
+    VNP_Params["vnp_OrderType"] = vnp_OrderType;
+    VNP_Params["vnp_Amount"] = amount * 100;
+    VNP_Params["vnp_ReturnUrl"] =
+    ReturnUrl + `?tourId=${tourId}&userId=${userId}&quantity=${quantity}`;
+    VNP_Params["vnp_IpAddr"] = ipAdr;
+    VNP_Params["vnp_Locale"] = "vn";
+    VNP_Params["vnp_CreateDate"] = createDate;
+    if (bankcode !== null && bankcode !== "") {
+      VNP_Params["vnp_BankCode"] = bankcode;
+    }
+
+
+    // var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
+    // var tmnCode: string | undefined = process.env.VNP_TMNCODE;
+    // var secretKey: string | undefined = process.env.VPN_HASHSECRET;
+    // var VNP_Url: string | undefined = process.env.VNP_URL;
+    // var ReturnUrl: string | undefined = process.env.VNP_RETURN_URL;
+
+    // var date = new Date();
+    // var createDate: string = FormatAllDate(date);
+    // var orderId: string = FormatDateOrderId(date);
+    // var amount: string = (req.body.amount * 100).toFixed(0); // Định dạng số tiền theo yêu cầu của VNPAY
+    // var tourId: string = req.body.tourId;
+    // var userId: string = req.body.userId;
+    // var bankcode: string = "";
+    // var orderInfo: string = req.body.orderDescription;
+    // var quantity: number = req.body.quantily;
 
     var locale: string = req.body.language;
     if (locale === null || locale === "") {
@@ -222,41 +246,27 @@ router.post("/create-payment-tour", function(req: any, res: Response, next: Next
     }
 
     // Các thuộc tính phù hợp với định dạng của VNPAY
-    var currCode: string = "VND";
-    var vnp_Version: string = "2.1.0";
-    var vnp_Command: string = "pay";
-    var vnp_OrderType: string = "other";
 
-    // Tạo đối tượng VNP_Params và định dạng các thuộc tính
-    var VNP_Params: any = {
-      vnp_Version: vnp_Version,
-      vnp_Command: vnp_Command,
-      vnp_TmnCode: tmnCode,
-      vnp_Locale: locale,
-      vnp_CurrCode: currCode,
-      vnp_TxnRef: orderId,
-      vnp_OrderInfo: orderInfo,
-      vnp_OrderType: vnp_OrderType,
-      vnp_Amount: amount,
-      vnp_ReturnUrl: ReturnUrl + `?tourId=${tourId}&userId=${userId}&quantity=${quantity}`,
-      vnp_IpAddr: ipAdr,
-      vnp_CreateDate: createDate,
-    };
+   
+    VNP_Params = sortObject(VNP_Params);
 
     if (bankcode !== null && bankcode !== "") {
       VNP_Params["vnp_BankCode"] = bankcode;
     }
 
-
-    var signData = queryString.stringify(VNP_Params, {encode: true});
+    var querystring = require("qs");
+    var signData = querystring.stringify(VNP_Params, { encode: true });
+    var crypto = require("crypto");
+    var hmac = crypto.createHmac("sha512", secretKey);
+    var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+    VNP_Params["vnp_SecureHash"] = signed;
+    VNP_Url += "?" + querystring.stringify(VNP_Params, { encode: true });
     if(!secretKey) {
       throw new Error('secretKey environment variable is not defined.');
     }
-    var hmac = crypto.createHmac("sha512", secretKey);
-    var signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
-    VNP_Params["vnp_SecureHash"] = signed;
-    VNP_Url += "?" + queryString.stringify(VNP_Params, {encode: true});
 
+    // VNP_Url = decodeURIComponent(VNP_Url ? VNP_Url : "");
+    
     res.status(201).json({
       success: true,
       VNP_Url,

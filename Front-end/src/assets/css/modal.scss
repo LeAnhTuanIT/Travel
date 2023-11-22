@@ -1,0 +1,61 @@
+.modal-sell {
+  width: 85px;
+  height: 68px;
+  position: fixed;
+  right: 14px;
+  bottom: 26px;
+  text-decoration: none; }
+
+.modal-price {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 25px;
+  height: 65px;
+  width: 65px;
+  border-radius: 100%;
+  background-color: #555555;
+  color: #fff; }
+
+.modal-price::after {
+  content: "BUY NOW";
+  height: 16px;
+  width: 52px;
+  position: absolute;
+  background-color: #F76570;
+  color: #fff;
+  top: 2px;
+  left: 8px;
+  font-weight: 300;
+  font-size: 8px;
+  letter-spacing: 1px;
+  font-weight: 500; }
+
+.modal-price-icon {
+  position: absolute;
+  font-size: 9px;
+  top: 16px;
+  left: 10px; }
+
+.modal-item-fire {
+  position: absolute;
+  text-align: center;
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 15px;
+  height: 36px;
+  width: 36px;
+  border-radius: 100%;
+  background-color: #555555;
+  color: #fff;
+  bottom: 2px;
+  left: -18px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15); }
+
+/* RESPONSIVE MODAL*/
+@media (max-width: 1200px) {
+  .modal-sell {
+    display: none; } }

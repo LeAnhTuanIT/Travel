@@ -1,0 +1,86 @@
+@media (max-width: 1200px) {
+  .header-content-container {
+    margin-left: 25px; }
+  .header-main-content-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #434a54;
+    position: fixed;
+    right: 0;
+    min-width: 300px;
+    overflow-y: auto;
+    color: #fff;
+    text-align: left;
+    height: 100%;
+    top: 0;
+    animation: menu ease-in .5s; }
+  .header-main-close-item {
+    display: block;
+    text-align: right;
+    margin: 12px;
+    font-size: 20px;
+    cursor: pointer; }
+  .header-content-more {
+    position: relative;
+    display: flex;
+    color: #fff;
+    right: 0;
+    margin: 0;
+    left: 0;
+    background-color: transparent; }
+  .header-content-more:last-child {
+    border-top: 0;
+    box-shadow: none; }
+  .header-more-detail {
+    color: #fff;
+    background: transparent; }
+  .header-more-detail:hover {
+    background: transparent; }
+  .header-content-detail {
+    position: relative;
+    display: flex;
+    color: #fff;
+    right: 0;
+    margin: 0; }
+  .header-content-main {
+    color: #fff;
+    font-weight: 500;
+    font-size: 24px; }
+  .header-content-word {
+    border-bottom: 0;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    display: block;
+    background-color: transparent; }
+  .disable-mob {
+    display: none; }
+  .header-content-word:hover {
+    background: none; }
+  .header-content-detail:last-child {
+    border: 0;
+    box-shadow: none; }
+  .header-content-container::after {
+    content: "";
+    border-right: none;
+    margin-left: 0; }
+  .header-main-container {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center; }
+  .header-main-img {
+    display: block;
+    margin: 0 auto; }
+  .header-main-icon {
+    display: block; }
+  .header-sub {
+    display: none; }
+  .ti-arrow-circle-right {
+    display: none; }
+  .header-content-booking {
+    color: #fff;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 24px; }
+  .navbar-display {
+    display: none; } }

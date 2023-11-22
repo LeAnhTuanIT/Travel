@@ -1,0 +1,20 @@
+@media (max-width: 1200px) {
+  .footer-container {
+    flex-direction: column;
+    padding-bottom: 52px; }
+  .footer-subscribe {
+    width: 100%; }
+  .footer-subscribe-email {
+    width: 50%; }
+  .footer-subscribe-btn {
+    width: 50%; }
+  .footer-container-sub {
+    margin-top: 52px; } }
+
+@media (max-width: 750px) {
+  .footer-subscribe {
+    flex-direction: column; }
+  .footer-subscribe-email {
+    width: 100%; }
+  .footer-subscribe-btn {
+    width: 100%; } }

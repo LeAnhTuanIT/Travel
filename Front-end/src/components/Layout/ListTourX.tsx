@@ -13,7 +13,7 @@ const ListTourX = (data: any) => {
             <a
               href="/search/{{slug}}"
               style={{
-                backgroundImage: `url("${backend_url}${item.images[0]}")`,
+                backgroundImage: `url("${item.images[0]}")`,
               }}
               className="main-item-img"
             ></a>

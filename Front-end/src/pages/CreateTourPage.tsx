@@ -20,7 +20,7 @@ const CreateTourPage = () => {
   const [destination, setDestination] = useState("");
   const [aim, setAim] = useState("");
   const [price, setPrice] = useState("1");
-  const [color, setColor] = useState("");
+  const [sold_out, Setsold_out] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const CreateTourPage = () => {
       aim == "" ||
       price == "" ||
       country == "" ||
-      color == ""
+      sold_out == ""
     ) {
       toast.error("Not Enough Information, Please check Again !!");
       return;
@@ -73,8 +73,8 @@ const CreateTourPage = () => {
     newForm.append("aim", aim);
     newForm.append("price", price);
     newForm.append("country", country);
-    newForm.append("color", color);
-    newForm.append("userId", user._id);
+    newForm.append("sold_out", sold_out);
+    newForm.append("user_id", user._id);
 
     dispatch(createTour(newForm) as unknown as AnyAction);
   };
@@ -124,12 +124,12 @@ const CreateTourPage = () => {
           style={{ margin: "20px 0" }}
           type="text"
           className="main-form-control m-w-100"
-          id="color"
-          name="color"
-          placeholder="Main Color"
-          onChange={(e) => setColor(e.target.value)}
+          id="Sold_Out"
+          name="Sold_Out"
+          placeholder="Sold_Out"
+          onChange={(e) => Setsold_out(e.target.value)}
         />
-        <div className="d-flex gap-3">
+        {/* <div className="d-flex gap-3">
           <div
             style={{
               width: "20px",
@@ -140,7 +140,7 @@ const CreateTourPage = () => {
           <a href="https://mycolor.space/?hex=%23845EC2&sub=1">
             Get Color from here !!!
           </a>
-        </div>
+        </div> */}
         <select
           style={{ margin: "20px 0" }}
           className="main-form-select m-w-100"

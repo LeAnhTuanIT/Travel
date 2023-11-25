@@ -7,7 +7,7 @@ import User, { UserDocument } from "../model/User.model";
 
 
 export const isAuthenticated = catchAsyncError(async (req: any, res: Response, next: NextFunction) => {
-  const token: string | undefined = req.headers.cookie;
+  const token: string | undefined = req.headers.cookies;
   if (!token) {
     return next(new ErrorHandler("Please login to continue", 401));
   }

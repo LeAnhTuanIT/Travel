@@ -35,7 +35,7 @@ const ListTour = (data: any) => {
                   <Link to={`/tour-detail/${item._id}`}>
                     <div
                       style={{
-                        backgroundImage: `url("${backend_url}${item.images[0]}")`,
+                        backgroundImage: `url("${item.images[0]}")`,
                       }}
                       className="body-choice-img"
                     >

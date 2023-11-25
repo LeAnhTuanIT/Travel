@@ -13,7 +13,7 @@ import {
 } from "../redux/actions/tour";
 import { AnyAction } from "redux";
 import { useParams } from "react-router-dom";
-// import { backend_url, server } from "../server";
+import { backend_url, server } from "../server";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -34,6 +34,7 @@ const TourDetailPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(id);
     dispatch(getTourById(id) as unknown as AnyAction);
   }, [dispatch]);
 
@@ -87,7 +88,8 @@ const TourDetailPage = () => {
       userId: user ? user._id : null,
       quantity: quantity,
     };
-
+    console.log(tour._id)
+    console.log(data)
     dispatch(createPaymentUrl(data) as unknown as AnyAction);
   }
 
@@ -109,7 +111,7 @@ const TourDetailPage = () => {
           <div className="item-feature-content">
             <FontAwesomeIcon
               icon={faLocationDot}
-              // style={{ backgroundColor: `#${tour.color}` }}
+              style={{ backgroundColor: `#${tour.color}` }}
               className="item-feature-icon"
             />
             <div className="item-feature-text">
@@ -123,7 +125,7 @@ const TourDetailPage = () => {
           <div className="item-feature-content">
             <FontAwesomeIcon
               icon={faLocationDot}
-              // style={{ backgroundColor: `#${tour.color}` }}
+              style={{ backgroundColor: `#${tour.color}` }}
               className="item-feature-icon"
             />
             <div className="item-feature-text">
@@ -137,7 +139,7 @@ const TourDetailPage = () => {
           </div>
 
           <div
-            // style={{ backgroundColor: `#${tour.color}` }}
+            style={{ backgroundColor: `#${tour.color}` }}
             className="item-feature-price"
           >
             {formatter.format(tour.price)}{" "}

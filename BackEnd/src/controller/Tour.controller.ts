@@ -42,24 +42,16 @@ router.get("/test", (_, res: Response) => {
 router.post("/create-tour",upload.array("images"),
   asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
-      const {name, country, description, destination, aim, price, sold_out, userId} = req.body;
+      const tourData = req.body;
+      console.log(tourData)
       const files = req.files;
       const ImagesUrl = files.map((file: {location: any}) => {
         return file.location;
       })
-      const user = await User.findOne({userId});
-      const tourData = {
-        name: name,
-        country: country,
-        description: description,
-        destination: destination,
-        aim: aim,
-        price: price,
-        sold_out: sold_out || undefined,
-        images: ImagesUrl,
-        user: user,
-      }
-      
+
+      tourData.images = ImagesUrl;
+      var user = await User.findOne({userId: tourData.userId});
+      tourData.user = user
 
       console.log(tourData);
       const Createtour = await Tour.create(tourData);
@@ -185,12 +177,12 @@ router.post("/create-payment-tour", function(req: any, res: Response, next: Next
     var date = new Date();
     var createDate: string = dateFormatAll(date);
     var orderId: string= FormatDateOrderId(date);
-    var amount: number = req.body.amount;
-    var tourId: string = req.body.tourId;
-    var userId: string = req.body.userId;
+    var amount: number = Number(req.body.paymentInfo.amount);
+    var tourId: string = req.body.paymentInfo.tourId;
+    var userId: string = req.body.paymentInfo.userId;
     var bankcode: string =  "";
-    var orderInfo: string = req.body.orderDescription;
-    var quantity: number = Number(req.body.quantity);
+    var orderInfo: string = req.body.paymentInfo.orderDescription;
+    var quantity: number = Number(req.body.paymentInfo.quantity);
     var currCode: string = "VND";
     var VNP_Params: any = {};
     var currCode: string = "VND";
@@ -207,7 +199,6 @@ router.post("/create-payment-tour", function(req: any, res: Response, next: Next
     VNP_Params["vnp_Version"] = vnp_Version;
     VNP_Params["vnp_Command"] = vnp_Command;
     VNP_Params["vnp_TmnCode"] = tmnCode;
-    // VNP_Params['vnp_Merchant'] = ''
     VNP_Params["vnp_Locale"] = locale;
     VNP_Params["vnp_CurrCode"] = currCode;
     VNP_Params["vnp_TxnRef"] = orderId;
@@ -223,32 +214,14 @@ router.post("/create-payment-tour", function(req: any, res: Response, next: Next
       VNP_Params["vnp_BankCode"] = bankcode;
     }
 
-
-    // var ipAdr: string | undefined = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.Socket.remoteAddressl;
-    // var tmnCode: string | undefined = process.env.VNP_TMNCODE;
-    // var secretKey: string | undefined = process.env.VPN_HASHSECRET;
-    // var VNP_Url: string | undefined = process.env.VNP_URL;
-    // var ReturnUrl: string | undefined = process.env.VNP_RETURN_URL;
-
-    // var date = new Date();
-    // var createDate: string = FormatAllDate(date);
-    // var orderId: string = FormatDateOrderId(date);
-    // var amount: string = (req.body.amount * 100).toFixed(0); // Định dạng số tiền theo yêu cầu của VNPAY
-    // var tourId: string = req.body.tourId;
-    // var userId: string = req.body.userId;
-    // var bankcode: string = "";
-    // var orderInfo: string = req.body.orderDescription;
-    // var quantity: number = req.body.quantily;
-
     var locale: string = req.body.language;
     if (locale === null || locale === "") {
       locale = "vn";
     }
 
     // Các thuộc tính phù hợp với định dạng của VNPAY
-
-   
     VNP_Params = sortObject(VNP_Params);
+    console.log(VNP_Params)
 
     if (bankcode !== null && bankcode !== "") {
       VNP_Params["vnp_BankCode"] = bankcode;

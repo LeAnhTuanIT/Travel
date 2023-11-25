@@ -215,12 +215,12 @@ export const createPaymentUrl =
         paymentInfo: dataToApi,
       };
       const { data } = await axios.post(
-        `${server}/tour/create_payment_url`,
+        `${server}/tour/create-payment-tour`,
         config
       );
 
       console.log(data.vnpUrl);
-      window.location = data.vnpUrl;
+      window.location = data.VNP_Url;
 
       dispatch({
         type: "createPaymentUrlSuccess",

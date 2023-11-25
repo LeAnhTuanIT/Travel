@@ -111,6 +111,7 @@ export const tourReducer = createReducer(initialState, {
   createPaymentUrlSuccess: (state: any, action: any) => {
     state.isLoading = false;
     state.redirectUrl = action.payload.vnpUrl;
+    console.log(action.payload.vnpUrl);
   },
   createPaymentUrlFailed: (state: any, action: any) => {
     state.isLoading = false;

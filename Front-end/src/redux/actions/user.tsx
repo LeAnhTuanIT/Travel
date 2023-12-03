@@ -3,6 +3,52 @@ import { server } from "../../server";
 import { getCookie } from "../../shared/GlobalFunction";
 // load user
 
+
+// create user
+export const createUser = (newForm: any) => async (dispatch: any) => {
+  try {
+    dispatch({
+      type: "CreateUserRequest",
+    });
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const { data } = await axios.post(
+      `${server}/user/create-user`,
+      newForm,
+      config
+    );
+    dispatch({
+      type: "CreateUserSuccess",
+      payload: data.user,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: "CreateUserFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+
+// activate user
+export const activateUser = () => async (dispatch: any) => {
+  try {
+    dispatch({
+      type: "ActivateUserRequest",
+    });
+    const { data } = await axios.post(`${server}/user/activation`);
+    dispatch({
+      type: "ActivateUserSuccess",
+      payload: data.user,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: "ActivateUserFail",
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const loadUser = () => async (dispatch: any) => {
   let token = getCookie("token");
 

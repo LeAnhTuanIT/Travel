@@ -179,7 +179,7 @@ const ChartPage = () => {
     <>
       <div
         style={{ width: "80vw" }}
-        className="mx-auto mb-5 mt-3 gap-2 d-flex flex-column gap-4"
+        className="mx-auto mb-5 mt-3 d-flex flex-column gap-4"
       >
         <div className="d-flex gap-5">
           {/* cart */}

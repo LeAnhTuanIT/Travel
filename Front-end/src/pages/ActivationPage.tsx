@@ -31,8 +31,9 @@ const ActivationPage = () => {
       };
 
       sendRequest();
-    }
-  }, []);
+    
+  };
+  },[]);
   return (
     <div
       style={{

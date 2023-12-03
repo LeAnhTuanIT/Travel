@@ -5,10 +5,11 @@ import { Provider } from "react-redux";
 import Store from "./redux/store";
 
 ReactDOM.render(
-
-    <Provider store={Store}>
-      <App />
-    </Provider>
+   <React.StrictMode>
+      <Provider store={Store}>
+        <App />
+      </Provider>
+   </React.StrictMode>
   ,
   document.getElementById("root")
 );

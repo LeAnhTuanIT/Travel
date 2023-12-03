@@ -2,17 +2,19 @@ import nodemailer, { TransportOptions } from "nodemailer";
 import fs from "fs";
 import path from "path";
 
-interface Attachment {
+interface attachment {
   filename: string;
-  path: string;
+  path?: string | undefined;
+  content: any;
+  contentType: string;
 }
 
 const sendMail = async (option: {
   email: string;
   subject: string;
   message: string;
-  attachment?: Attachment;
-}): Promise<void> => {
+  attachment?: attachment | undefined | string;
+}) => {
   console.log("start send email");
 
   const transporter = nodemailer.createTransport({
@@ -25,8 +27,8 @@ const sendMail = async (option: {
     },
   } as TransportOptions);
 
-  const imagePath = path.join(__dirname, "../assets/", "logo.png");
-  const imageContent = fs.readFileSync(imagePath, { encoding: "base64" });
+  // const imagePath = path.join(__dirname, "../assets/", "logo.png");
+  // const imageContent = fs.readFileSync(imagePath, { encoding: "base64" });
 
   const htmlImage = `<img src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/travel-website/logo.png" 
   alt="Image" style="display: block; margin-top: 20px;">`;
@@ -35,7 +37,7 @@ const sendMail = async (option: {
     to: option.email,
     subject: option.subject,
     html: option.message + htmlImage,
-    attachments: [option.attachment].filter(Boolean) as Attachment[],
+    attachments: [option.attachment].filter(Boolean) as attachment[],
   };
 
   await transporter.sendMail(mailOption, (err, info: any) => { 

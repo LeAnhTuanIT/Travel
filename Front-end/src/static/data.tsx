@@ -27,6 +27,10 @@ export const destinationData = [
     label: "oceania",
     value: "oceania",
   },
+  {
+    label: "vietnam",
+    value: "vietnam",
+  }
 ];
 
 export const aimData = [

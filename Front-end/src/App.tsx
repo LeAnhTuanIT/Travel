@@ -20,6 +20,8 @@ import {
   SearchToursPage,
   ChartPage,
   UpdateTourPage,
+  BlogPage,
+  BlogDetailPage,
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import Store from "./redux/store";
@@ -60,6 +62,8 @@ function App() {
               <Route path="/tour-dashboard" element={<TourPage />}></Route>
               <Route path="/create-tour" element={<CreateTourPage />}></Route>
               <Route path="/update-user" element={<UpdateUserPage />}></Route>
+              <Route path="/blog-page" element={<BlogPage/>}></Route>
+              <Route path="/blog-detail/:id" element={<BlogDetailPage />}></Route>
               <Route
                 path="/update-tour/:id"
                 element={<UpdateTourPage />}

@@ -6,12 +6,13 @@ const ListTourX = (data: any) => {
   const items = data.data;
   const formatter = moneyFormatter();
   return (
+    <>
     <div className="main-footer-list mb-12 m-10 flex-3">
       {items.map((item: any, index: any) => {
         return (
           <div key={index} className="main-footer-item">
             <a
-              href="/search/{{slug}}"
+              href={`/search/${item._id}`}
               style={{
                 backgroundImage: `url("${item.images[0]}")`,
               }}
@@ -32,9 +33,11 @@ const ListTourX = (data: any) => {
               <div className="main-price-detail d-flex justify-content-center">DETAILS</div>
             </a>
           </div>
+          
         );
       })}
     </div>
+    </>
   );
 };
 

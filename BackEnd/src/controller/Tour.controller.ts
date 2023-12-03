@@ -10,6 +10,8 @@ import {FormatAllDate, FormatDateOrderId} from "../middleware/Format.middlewarre
 import queryString from "qs"
 import crypto from "crypto"
 import config from "config"
+import sendMail from '../utils/SendMail.utils';
+import ErrorHandler from "../utils/ErrorHandler.utils";
 
 const sortObject = require("sort-object");
 
@@ -119,7 +121,7 @@ router.delete("/delete-tour/:id", asyncMiddleware(async (req: any, res: Response
 }));
 
 // get all tour of admin 
-router.get("/get-all-tour-admin", asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
+router.get("/get-all-tour-admin",isAuthenticated, asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
   try {
     const tours = (await Tour.find({}).populate({
       path: "reviews",
@@ -166,6 +168,40 @@ router.get("/get-tour/:id", asyncMiddleware(async (req:Request, res: Response, n
   }
 }));
 
+// endpoint với từ khóa tìm kiếm
+router.get("/search/:name", asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+   
+    const tours = await Tour.find({
+      name: {
+        $regex: req.params.name,
+        $options: "i",
+      },
+    })
+    res.status(200).json({
+      success: true,
+      tours,
+    });
+  } catch (error: any) {
+    return next(new errorHandler(error.message, 500));
+  }
+}));
+
+
+// Payment
+
+type ExpressResponse = Response<any>;
+
+function handleRedirect(res: ExpressResponse, url: string): void {
+  if (res.headersSent) {
+    // Headers have already been sent, so return early
+    return;
+  }
+
+  res.setHeader('Location', url);
+  res.statusCode = 302;
+  
+}
 
 // Payment tour
 router.post("/create-payment-tour", function(req: any, res: Response, next: NextFunction){
@@ -244,10 +280,11 @@ router.post("/create-payment-tour", function(req: any, res: Response, next: Next
       success: true,
       VNP_Url,
     })
+    console.log(VNP_Url)
     if(!VNP_Url) {
       throw new Error("VNPAY URL envirionment variable is not defined");
     }
-    res.redirect(VNP_Url);
+    handleRedirect(res, VNP_Url);
 
 });
 
@@ -305,4 +342,30 @@ router.get("/pay_ipn", function (req: Request, res: Response, next: NextFunction
   }
 
 })
+
+
+// Send Discount
+router.post("/send-discount", asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await sendMail({
+      email: req.body.email,
+      subject: "Activate you account",
+      message: `
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7f7f7;">
+    <h1 style="font-size: 24px; margin-top: 0;">Ưu đãi giảm giá</h1>
+    <p style="font-size: 16px; margin-bottom: 10px;">Xin chào bạn,</p>
+    <p style="font-size: 16px; margin-bottom: 10px;">Chúng tôi rất vui mừng đưa ra một ưu đãi giảm giá đặc biệt cho bạn!</p>
+    <p style="font-size: 16px; margin-bottom: 10px;">Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi. Chúng tôi mong được phục vụ bạn.</p>
+    <p style="font-size: 16px; margin-bottom: 10px;">Trân trọng,</p>
+    <p style="font-size: 16px; margin-bottom: 10px;">Love Travel</p>
+    </div>
+    <images src=""/>
+    `,
+    
+    });
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}))
+
 module.exports = router;

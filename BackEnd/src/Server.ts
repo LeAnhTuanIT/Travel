@@ -22,24 +22,12 @@ app.use(bodyParser.json());
 app.use(compression());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173","https://travellove.local", "https://facebook.com"],
+    // origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
 
-
-// const io = new Server(server, {
-//     cors: {
-//         origin: '*',
-//     },
-// });
-
-// io.on('connection', (socket) => {
-//     io.on("connection", (socket) => {
-//         console.log("New client connected");
-//         console.log(socket.id); 
-//       });
-// });
 
 ConnectDatabase();
 app.use(router);

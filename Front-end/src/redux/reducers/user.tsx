@@ -5,6 +5,23 @@ const initialState = {
 };
 
 export const userReducer = createReducer(initialState, {
+  
+  // CreateUserRequest: (state: any) => {
+  //   state.loading = true;
+  // },
+  // CreateUserSuccess: (state: any, action) => {
+  //   state.isAuthenticated = true;
+  //   state.loading = false;
+  //   state.user = action.payload;
+  // },
+  // CreateUserFail: (state: any, action) => {
+  //   state.loading = false;
+  //   state.error = action.payload;
+  //   state.isAuthenticated = false;
+  // },
+  
+  
+  
   LoadUserRequest: (state: any) => {
     state.loading = true;
   },

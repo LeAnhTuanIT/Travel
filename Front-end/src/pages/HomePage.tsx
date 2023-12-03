@@ -17,8 +17,11 @@ import { Link } from "react-router-dom";
 import ListTourX from "../components/Layout/ListTourX";
 import { aimData, destinationData, countryData } from "../static/data";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllTours, getPDF } from "../redux/actions/tour";
+import { getAllTours, getPDF, getTourByName } from "../redux/actions/tour";
 import { AnyAction } from "redux";
+import axios from 'axios';
+import { server } from "../server";
+
 const HomePage = () => {
   const settings = {
     dots: true,
@@ -31,6 +34,7 @@ const HomePage = () => {
     fade: true,
   };
   const { tours, isLoading } = useSelector((state: any) => state.tours);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllTours() as unknown as AnyAction);
@@ -88,16 +92,20 @@ const HomePage = () => {
   const handleSearchChange = (e: any) => {
     const term = e.target.value;
     setKeyword(term);
-
-    if (term != "") {
-      const filteredTour =
-        data &&
-        data.filter((tour: any) => {
-          return tour.name.toLowerCase().includes(term.toLowerCase());
+  
+    if (term !== '') {
+      axios
+        .get(`${server}/tour/search/${term}`) // Gửi yêu cầu GET đến API endpoint với từ khóa tìm kiếm
+        .then((response) => {
+          const filteredTour = response.data.tours; // Lấy danh sách tours từ kết quả trả về của API endpoint
+          setData(filteredTour); // Cập nhật danh sách tours trên giao diện
+        })
+        .catch((error) => {
+          console.error(error);
+          // Xử lý lỗi nếu có
         });
-      setData(filteredTour);
     } else {
-      setData(tours);
+      setData(tours); // Đưa danh sách tours về trạng thái ban đầu
     }
   };
 
@@ -251,7 +259,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <ListTour data={data ? tours.slice(0,6) : data}></ListTour>
+      <ListTour data={data.length ? data : tours.slice(0,6)}></ListTour>
 
       <div className="main-container-more">
         <Link to="/search-tours" className="main-more-big">

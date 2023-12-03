@@ -10,6 +10,8 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import SearchToursPage from "./pages/SearchToursPage";
 import ChartPage from './pages/ChartPage'
 import UpdateTourPage from './pages/UpdateTourPage'
+import BlogDetailPage from "./pages/BlogDetailPage";
+import BlogPage from "./pages/BlogPage";
 export {
   LoginPage,
   SignUpPage,
@@ -22,5 +24,7 @@ export {
   PaymentSuccess,
   SearchToursPage,
   ChartPage,
-  UpdateTourPage
+  UpdateTourPage,
+  BlogPage,
+  BlogDetailPage
 };

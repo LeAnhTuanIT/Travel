@@ -4,7 +4,7 @@ import { getCookie } from "../../shared/GlobalFunction";
 import { AnyAction, Dispatch } from "redux";
 
 // create product
-export const createTour =
+export const createBlog =
   (newForm: FormData) => async (dispatch: Dispatch<AnyAction>) => {
     try {
       let token = getCookie("token");
@@ -177,20 +177,20 @@ export const getPDF:any = () => async (dispatch: any) => {
   }
 };
 
-export const getTourById = (tourId: any) => async (dispatch: any) => {
+export const getBlogById = (blogId: any) => async (dispatch: any) => {
   try {
     dispatch({
-      type: "getTourByIdRequest",
+      type: "getBlogByIdRequest",
     });
 
-    const { data } = await axios.get(`${server}/tour/get-tour/${tourId}`);
+    const { data } = await axios.get(`${server}/blogs/get-blog/${blogId}`);
     dispatch({
-      type: "getTourByIdSuccess",
-      payload: data.tour,
+      type: "getBLogByIdSuccess",
+      payload: data.blog,
     });
   } catch (error: any) {
     dispatch({
-      type: "getTourByIdFailed",
+      type: "getBlogByIdFailed",
       payload: error.response.data.message,
     });
   }
@@ -219,7 +219,7 @@ export const createPaymentUrl =
         config
       );
 
-      console.log(data.VNP_Url);
+      console.log(data.vnpUrl);
       window.location = data.VNP_Url;
 
       dispatch({
@@ -278,23 +278,3 @@ export const createPaymentUrl =
 //     });
 //   }
 // };
-
-// get tour by name with search
-export const getTourByName = (name: any) => async (dispatch: any) => {
-  try {
-    dispatch({
-      type: "getTourByNameRequest",
-    });
-
-    const { data } = await axios.get(`${server}/tour/search/${name}`);
-    dispatch({
-      type: "getTourByNameSuccess",
-      payload: data.tours,
-    });
-  } catch (error: any) {
-    dispatch({
-      type: "getTourByNameFailed",
-      payload: error.response.data.message,
-    });
-  }
-};

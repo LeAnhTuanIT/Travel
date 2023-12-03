@@ -61,7 +61,7 @@ router.post(
           <p>Best regards,</p>
           <p>Love Travel </p>
         `,
-        //   attachment: attachment,
+          attachment: attachment ,
         });
       } catch (error) {
         console.error(error);

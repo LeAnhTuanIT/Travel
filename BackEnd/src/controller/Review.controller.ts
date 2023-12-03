@@ -9,25 +9,23 @@ const router = express.Router();
 
 router.post("/create-review", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const userId = req.params.userId;
-        const tourId = req.params.tourId;
+        
         const reviewData = req.body;
-
-        const user = await User.findOne({userId});
-
-        const tour = await Tour.findOne({tourId});
+        const user = await User.findById(reviewData.userId);
+        const tour = await Tour.findById(reviewData.tourId);
 
         const ReviewData = {
             rating: reviewData.rating,
             comments: reviewData.comments,
             user: user,
-
         }
         const createReview = await Review.create(ReviewData);
 
-        const SummitTour = await Tour.findOneAndUpdate(tourId, {
+        const SummitTour = await Tour.findByIdAndUpdate(tour?._id, {
             $push: {reviews: createReview._id}
         })
+
+        console.log(SummitTour);
 
         if(!SummitTour) {
             res.status(500).json({
@@ -75,7 +73,7 @@ router.put("/update-review/:id", asyncMiddleware(async (req: any, res: Response,
             };
 
     
-            const update = await Review.findOneAndUpdate({_id: reviewId},reviewUpdate)
+            const update = await Review.findByIdAndUpdate({_id: reviewId},reviewUpdate)
             console.log(reviewUpdate)
             res.status(200).json({
                 sucess: true,
@@ -102,6 +100,21 @@ router.delete("/delete-review/:id", asyncMiddleware(async (req:any, res: Respons
    } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
    } 
+}))
+
+
+// get all review
+router.get("/get-all-reviews", asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const review = await Review.find({});
+        res.status(200).json({
+            success: true,
+            message: "get all review",
+            data: review
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
 }))
 
 module.exports = router;

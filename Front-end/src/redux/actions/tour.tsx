@@ -118,7 +118,7 @@ export const getAllToursAdmin = (id: any) => async (dispatch: any) => {
       type: "getAllToursAdminRequest",
     });
 
-    const { data } = await axios.get(`${server}/tour/get-all-tour-admin/${id}`);
+    const { data } = await axios.get(`${server}/tour/get-all-tour-admin`);
     dispatch({
       type: "getAllToursAdminSuccess",
       payload: data.tours,

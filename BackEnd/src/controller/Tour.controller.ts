@@ -121,7 +121,7 @@ router.delete("/delete-tour/:id", asyncMiddleware(async (req: any, res: Response
 }));
 
 // get all tour of admin 
-router.get("/get-all-tour-admin",isAuthenticated, asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
+router.get("/get-all-tour-admin", asyncMiddleware(async (req:Request, res: Response, next: NextFunction) => {
   try {
     const tours = (await Tour.find({}).populate({
       path: "reviews",

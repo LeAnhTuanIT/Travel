@@ -21,7 +21,7 @@ const ListTourX = (data: any) => {
 
             <div className="main-item-content">
               <div className="main-item-header text-capitalize">{item.destination}</div>
-              <div className="main-item-text " style={{textTransform: "capitalize"}}>{item.description} </div>
+              <div className="main-item-text " style={{textTransform: "capitalize"}}>{item.description.replace(/<[^>]+>/g, '')} </div>
             </div>
 
             <a

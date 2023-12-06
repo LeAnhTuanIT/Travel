@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { backend_url } from "../../server";
 import { Link } from "react-router-dom";
 import { moneyFormatter } from "../../shared/GlobalFunction";
@@ -25,6 +25,11 @@ const ListTour = (data: any) => {
       {/* a tour */}
       {items.length != 0
         ? items.map((item: any, index: any) => {
+          // const [html, setHtml] = useState<string>("")
+          //   useEffect(() => {
+          //   setHtml()
+          //   }, [html])
+
             return (
               <div
                 key={index}
@@ -63,7 +68,8 @@ const ListTour = (data: any) => {
                     className="body-choice-content-container"
                   >
                     <div className="body-choice-content">
-                      {item.description}
+                      {item.description.replace(/<[^>]+>/g, '')}
+                      
                     </div>
                     <div className="w-100 d-flex justify-content-between gap-4 flex-wrap">
                       {active ? (

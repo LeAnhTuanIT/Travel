@@ -4,7 +4,7 @@ import { getCookie } from "../../shared/GlobalFunction";
 import { AnyAction, Dispatch } from "redux";
 
 // create review
-export const createReview =
+export const createReviewTour =
   (newReview: any) => async (dispatch: Dispatch<AnyAction>) => {
     try {
       let token = getCookie("token");
@@ -23,7 +23,44 @@ export const createReview =
       };
 
       const { data } = await axios.post(
-        `${server}/review/create-review`,
+        `${server}/review/create-review-tour`,
+        newReview,
+        config
+      );
+      dispatch({
+        type: "reviewCreateSuccess",
+        payload: data.review,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "createReviewFail",
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+
+
+  export const createReviewBLog =
+  (newReview: any) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      let token = getCookie("token");
+
+      dispatch({
+        type: "createReviewRequest",
+      });
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Cookies: token,
+          "Access-Control-Allow-Credentials": true,
+        },
+        withCredentials: true,
+      };
+
+      const { data } = await axios.post(
+        `${server}/review/create-review-blog`,
         newReview,
         config
       );

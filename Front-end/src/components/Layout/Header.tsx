@@ -170,12 +170,6 @@ const Header = () => {
                 <Link to="/" className="header-content-word">
                   SEARCH
                 </Link>
-                <Link to="/" className="header-content-word">
-                  SINGLE PACKAGES
-                </Link>
-                <Link to="/" className="header-content-word">
-                  DESTINATION
-                </Link>
               </div>
             </div>
             <div className="header-content-container">
@@ -236,37 +230,23 @@ const Header = () => {
             </div>
 
             <div className="header-content-container">
-              <Link to="" className="header-content-main">
-                NEWS
+              <Link to="blog-page" className="header-content-main">
+                BLOG
               </Link>
-              <div className="header-content-detail">
-                <Link to="" className="header-content-word">
-                  Archive
-                </Link>
-                <Link to="" className="header-content-word">
-                  Single Post
-                  <span className="ti-arrow-circle-right "></span>
-                  <span className="header-content-more">
-                    <span className="header-more-detail">Full Width</span>
-                    <span className="header-more-detail">Right Sidebar</span>
-                    <span className="header-more-detail">Left Sidebar</span>
-                  </span>
-                </Link>
-              </div>
             </div>
 
             <div className="header-content-container">
-              <Link to="" className="header-content-main">
-                CONTACT
+              <Link to="/create-blog" className="header-content-main">
+                POST BLOG
               </Link>
-              <div className="header-content-detail">
+              {/* <div className="header-content-detail">
                 <Link to="" className="header-content-word">
-                  Contact 1
+                 
                 </Link>
                 <Link to="" className="header-content-word">
                   Contact 2
                 </Link>
-              </div>
+              </div> */}
             </div>
 
             <div className="header-content-container">

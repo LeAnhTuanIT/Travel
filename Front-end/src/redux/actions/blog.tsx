@@ -10,7 +10,7 @@ export const createBlog =
       let token = getCookie("token");
 
       dispatch({
-        type: "createTourRequest",
+        type: "createBlogRequest",
       });
 
       const config = {
@@ -23,30 +23,30 @@ export const createBlog =
       };
 
       const { data } = await axios.post(
-        `${server}/tour/create-tour`,
+        `${server}/blogs/create-blog`,
         newForm,
         config
       );
       dispatch({
-        type: "tourCreateSuccess",
-        payload: data.tour,
+        type: "BlogCreateSuccess",
+        payload: data.Blog,
       });
     } catch (error: any) {
       dispatch({
-        type: "createTourFail",
+        type: "createBlogFail",
         payload: error.response.data.message,
       });
     }
   };
 
 // create product
-export const updateTour =
+export const updateBlog =
   (newForm: FormData) => async (dispatch: Dispatch<AnyAction>) => {
     try {
       let token = getCookie("token");
 
       dispatch({
-        type: "updateTourRequest",
+        type: "updateBlogRequest",
       });
 
       const config = {
@@ -61,29 +61,29 @@ export const updateTour =
       console.log(newForm.getAll("images"));
 
       const { data } = await axios.put(
-        `${server}/tour/update-tour`,
+        `${server}/Blog/update-Blog`,
         newForm,
         config
       );
       dispatch({
-        type: "updateTourSuccess",
-        payload: data.tour,
+        type: "updateBlogSuccess",
+        payload: data.Blog,
       });
     } catch (error: any) {
       console.log(error);
       dispatch({
-        type: "updateTourFail",
+        type: "updateBlogFail",
         payload: error.response.data.message,
       });
     }
   };
 
-export const deleteTours =
-  (idTours: any) => async (dispatch: Dispatch<AnyAction>) => {
+export const deleteBlog =
+  (idBlog: any) => async (dispatch: Dispatch<AnyAction>) => {
     try {
       let token = getCookie("token");
       dispatch({
-        type: "deleteTourRequest",
+        type: "deleteBlogRequest",
       });
 
       const config = {
@@ -96,86 +96,79 @@ export const deleteTours =
       };
 
       const { data } = await axios.delete(
-        `${server}/tour/delete-tour/${idTours}`,
+        `${server}/blog/delete-blog/${idBlog}`,
         config
       );
       dispatch({
-        type: "deleteTourSuccess",
-        payload: data.tour,
+        type: "deleteBglogSuccess",
+        payload: data.blog,
       });
     } catch (error: any) {
       console.log(error);
       dispatch({
-        type: "deleteTourFail",
+        type: "deleteBlogFail",
         payload: error.response.data.message,
       });
     }
   };
 // get All Products of a shop
-export const getAllToursAdmin = (id: any) => async (dispatch: any) => {
+export const getAllBLogsAdmin = (id: any) => async (dispatch: any) => {
   try {
     dispatch({
-      type: "getAllToursAdminRequest",
+      type: "getAllBLogsAdminRequest",
     });
 
-    const { data } = await axios.get(`${server}/tour/get-all-tour-admin/${id}`);
+    const { data } = await axios.get(`${server}/Blog/get-all-blog-admin/${id}`);
     dispatch({
-      type: "getAllToursAdminSuccess",
-      payload: data.tours,
+      type: "getAllBLogsAdminSuccess",
+      payload: data.blogs,
     });
   } catch (error: any) {
     dispatch({
-      type: "getAllToursAdminFailed",
+      type: "getAllBlogsAdminFailed",
       payload: error.response.data.message,
     });
   }
 };
 
-export const getAllTours = () => async (dispatch: any) => {
+export const getAllBlogs = () => async (dispatch: any) => {
   try {
     dispatch({
-      type: "getAllToursRequest",
+      type: "getAllBlogsRequest",
     });
 
-    const { data } = await axios.get(`${server}/tour/get-all-tour`);
+    const { data } = await axios.get(`${server}/blogs/get-all-blog`);
     dispatch({
-      type: "getAllToursSuccess",
-      payload: data.tours,
+      type: "getAllBlogsSuccess",
+      payload: data.blogs,
     });
   } catch (error: any) {
     dispatch({
-      type: "getAllToursFailed",
+      type: "getAllBlogsFailed",
       payload: error.response.data.message,
     });
   }
 };
 
-export const getPDF:any = () => async (dispatch: any) => {
+export const getAllBlog = () => async (dispatch: any) => {
   try {
-    const response = await axios.get(`${server}/payment/pdfmaker`, {
-      responseType: "blob",
+    dispatch({
+      type: "getAllBlogsRequest",
     });
-    console.log("1");
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    console.log("2");
 
-    const link = document.createElement("a");
-    console.log("3");
-
-    link.href = url;
-    console.log("4");
-
-    link.setAttribute("download", "invoice.pdf");
-    console.log("5");
-
-    document.body.appendChild(link);
-    console.log("6");
-
-    link.click();
-  } catch (error) {
-    console.error(error);
+    const { data } = await axios.get(`${server}/blogs/get-all-blog`);
+    dispatch({
+      type: "getAllBlogsSuccess",
+      payload: data.blogs,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: "getAllBlogsFailed",
+      payload: error.response.data.message,
+    });
   }
 };
+
 
 export const getBlogById = (blogId: any) => async (dispatch: any) => {
   try {
@@ -185,25 +178,28 @@ export const getBlogById = (blogId: any) => async (dispatch: any) => {
 
     const { data } = await axios.get(`${server}/blogs/get-blog/${blogId}`);
     dispatch({
-      type: "getBLogByIdSuccess",
+      type: "getBlogByIdSuccess",
       payload: data.blog,
+      
     });
   } catch (error: any) {
     dispatch({
-      type: "getBlogByIdFailed",
+      type: "getBlogByIdFail",
       payload: error.response.data.message,
     });
   }
 };
 
-export const createPaymentUrl =
-  (dataToApi: Object) => async (dispatch: any) => {
-    try {
-      dispatch({
-        type: "createPaymentUrlRequest",
-      });
 
+
+// create product
+export const paidBlog =
+  (id: any) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
       let token = getCookie("token");
+      dispatch({
+        type: "paidBlogRequest",
+      });
 
       const config = {
         headers: {
@@ -212,69 +208,45 @@ export const createPaymentUrl =
           "Access-Control-Allow-Credentials": true,
         },
         withCredentials: true,
-        paymentInfo: dataToApi,
       };
-      const { data } = await axios.post(
-        `${server}/tour/create-payment-tour`,
-        config
-      );
 
-      console.log(data.vnpUrl);
-      window.location = data.VNP_Url;
-
+      await axios.put(`${server}/blogs/paid/${id}`, {}, config);
       dispatch({
-        type: "createPaymentUrlSuccess",
-        payload: data,
+        type: "paidBlogSuccess",
       });
     } catch (error: any) {
       dispatch({
-        type: "createPaymentUrlFailed",
+        type: "paidBlogFail",
         payload: error.response.data.message,
       });
     }
   };
-// // delete product of a shop
-// export const deleteProduct = (id: any) => async (dispatch: any) => {
-//   try {
-//     dispatch({
-//       type: "deleteProductRequest",
-//     });
 
-//     const { data } = await axios.delete(
-//       `${server}/product/delete-shop-product/${id}`,
-//       {
-//         withCredentials: true,
-//       }
-//     );
+  export const cancelBlog =
+  (id: any) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+      let token = getCookie("token");
+      dispatch({
+        type: "cancelBlogRequest",
+      });
 
-//     dispatch({
-//       type: "deleteProductSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error: any) {
-//     dispatch({
-//       type: "deleteProductFailed",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Cookies: token,
+          "Access-Control-Allow-Credentials": true,
+        },
+        withCredentials: true,
+      };
 
-// // get all products
-// export const getAllProducts = () => async (dispatch: any) => {
-//   try {
-//     dispatch({
-//       type: "getAllProductsRequest",
-//     });
-
-//     const { data } = await axios.get(`${server}/product/get-all-products`);
-//     dispatch({
-//       type: "getAllProductsSuccess",
-//       payload: data.products,
-//     });
-//   } catch (error: any) {
-//     dispatch({
-//       type: "getAllProductsFailed",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+      await axios.put(`${server}/blogs/cancel/${id}`, {},config);
+      dispatch({
+        type: "cancelBlogSuccess",
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "cancelBlogFail",
+        payload: error.response.data.message,
+      });
+    }
+  };

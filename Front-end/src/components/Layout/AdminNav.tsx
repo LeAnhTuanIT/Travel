@@ -35,7 +35,7 @@ const AdminNav = () => {
 
         <li className="categories__item">
           <Link
-            to="#"
+            to="/admin/blog"
             className="categories__item--link gap-2 border-m d-flex flex-column justify-content-center align-items-center"
           >
             <i className="fa-solid fa-newspaper"></i>

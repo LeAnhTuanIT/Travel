@@ -81,7 +81,7 @@ function generateHeader(doc: PDFKit.PDFDocument) {
   // Remaining code...
   const ImgUrl = "https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Background-1700737326404-812661581.png"
   doc
-    .image(ImgUrl, 50, 45, { width: 50 })
+    // .image(fs.readFileSync("./images/logo.png"), 50, 45, { width: 50 })
     .fillColor("#444444")
     .fontSize(20)
     .font("ArialUnicodeMS")

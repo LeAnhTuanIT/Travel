@@ -1,54 +1,62 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { moneyFormatter } from "../../shared/GlobalFunction";
-import { useDispatch } from "react-redux";
-import { cancelPayment, paidPayment } from "../../redux/actions/payment";
+import { useDispatch, useSelector } from "react-redux";
+import { cancelBlog, getBlogById, paidBlog } from "../../redux/actions/blog";
 import { AnyAction } from "redux";
 
-const PaymentItem = ({ payment }: any) => {
-  const formatter = moneyFormatter();
-  const [confirmPayment, setConfirmPayment] = useState(false);
-  const [confirmCancelPayment, setConfirmCancelPayment] = useState(false);
+const BlogItem = ({ blog }: any) => {
+
+
+  const [html, setHtml] = useState<string>("")
+  useEffect(() => {
+    setHtml(blog.content)
+  }, [html])
+
+  const [confirmBlog, setConfirmBlog] = useState(false);
+  const [confirmCancelBlog, setConfirmCancelBlog] = useState(false);
 
   const dispatch = useDispatch();
   let statusText = "";
   let statusClass = "";
-  let needPay = formatter.format(payment.amount - payment.received);
-  if (payment.status == 0) {
+  if (blog.status == "0") {
     statusText = "Canceled";
     statusClass = "table-danger";
-  } else if (payment.status == 1) {
+  } else if (blog.status =="1") {
     statusText = "Deposit";
     statusClass = "table-primary";
-  } else if (payment.status == 2) {
+  } else if (blog.status == "2") {
     statusText = "Success";
     statusClass = "table-success";
   }
 
   const handlePaid = (id: any) => {
     window.location.reload();
-    dispatch(paidPayment(id) as unknown as AnyAction);
+    dispatch(paidBlog(id) as unknown as AnyAction);
   };
   const handleCancel = (id: any) => {
     window.location.reload();
 
-    dispatch(cancelPayment(id) as unknown as AnyAction);
+    dispatch(cancelBlog(id) as unknown as AnyAction);
   };
+
+  const handelNav = () => {
+    window.location.href = `/blog-detail/${blog._id}`;
+    
+  }
   return (
     <tr className={statusClass}>
-      <th scope="row">{payment.transactionId} </th>
+      {/* <th scope="row">{blog._id} </th> */}
 
-      <td>{formatter.format(payment.amount)} </td>
+      <td>{blog.title}</td>
+      <td>{blog.description}</td>
+      <td dangerouslySetInnerHTML={{__html: html}}></td>
       <td>{statusText}</td>
-      <td>{payment.quantity}</td>
-      <td>{formatter.format(payment.received)}</td>
-      <td>{payment.user.name}</td>
-      <td>{payment.tour.name}</td>
       <td className="d-flex gap-3 justify-content-center">
         <button
           type="button"
           className="btn btn-success"
-          onClick={() => setConfirmPayment(true)}
-          disabled={payment.status != "1"}
+          onClick={() => setConfirmBlog(true)}
+          disabled={blog.status != "1"}
         >
           Paid
         </button>
@@ -56,7 +64,7 @@ const PaymentItem = ({ payment }: any) => {
         <div
           className={
             "position-fixed top-0 bottom-0 animation-popup background-popup index-top" +
-            (confirmPayment ? " active" : "")
+            (confirmBlog ? " active" : "")
           }
           tabIndex={-1}
           style={{ left: "0", right: "0" }}
@@ -64,7 +72,7 @@ const PaymentItem = ({ payment }: any) => {
           <div
             className={
               "modal-dialog mt-5 animation-popup background-popup index-top" +
-              (confirmPayment ? " active" : "")
+              (confirmBlog ? " active" : "")
             }
             style={{ backgroundColor: "#fff", maxWidth: "480px" }}
           >
@@ -78,25 +86,25 @@ const PaymentItem = ({ payment }: any) => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={() => setConfirmPayment(false)}
+                  onClick={() => setConfirmBlog(false)}
                 ></button>
               </div>
               <div className="modal-body p-4 border-top text-default text-initial">
                 {`Have you received enough money? Total is: `}
-                <strong>{needPay}</strong>
+                <strong>{blog._id}</strong>
               </div>
               <div className="modal-footer p-4 border-top d-flex justify-content-evenly">
                 <button
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
-                  onClick={(e) => setConfirmPayment(false)}
+                  onClick={(e) => setConfirmBlog(false)}
                 >
                   Close
                 </button>
                 <button
                   onClick={() => {
-                    handlePaid(payment._id);
+                    handlePaid(blog._id);
                   }}
                   type="button"
                   className="btn btn-success"
@@ -109,18 +117,18 @@ const PaymentItem = ({ payment }: any) => {
         </div>
         <button
           onClick={() => {
-            setConfirmCancelPayment(true);
+            setConfirmCancelBlog(true);
           }}
           type="button"
           className="btn btn-danger"
-          disabled={payment.status != "1"}
+          disabled={blog.status != "1"}
         >
           Cancel
         </button>
         <div
           className={
             "position-fixed top-0 bottom-0 animation-popup background-popup index-top" +
-            (confirmCancelPayment ? " active" : "")
+            (confirmCancelBlog ? " active" : "")
           }
           tabIndex={-1}
           style={{ left: "0", right: "0" }}
@@ -128,7 +136,7 @@ const PaymentItem = ({ payment }: any) => {
           <div
             className={
               "modal-dialog mt-5 animation-popup background-popup index-top" +
-              (confirmCancelPayment ? " active" : "")
+              (confirmCancelBlog ? " active" : "")
             }
             style={{ backgroundColor: "#fff", maxWidth: "480px" }}
           >
@@ -142,7 +150,7 @@ const PaymentItem = ({ payment }: any) => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={() => setConfirmCancelPayment(false)}
+                  onClick={() => setConfirmCancelBlog(false)}
                 ></button>
               </div>
               <div className="modal-body p-4 border-top text-default text-start">
@@ -153,13 +161,13 @@ const PaymentItem = ({ payment }: any) => {
                   type="button"
                   className="btn btn-secondary"
                   data-bs-dismiss="modal"
-                  onClick={(e) => setConfirmCancelPayment(false)}
+                  onClick={(e) => setConfirmCancelBlog(false)}
                 >
                   Close
                 </button>
                 <button
                   onClick={() => {
-                    handleCancel(payment._id);
+                    handleCancel(blog._id);
                   }}
                   type="button"
                   className="btn btn-danger"
@@ -170,9 +178,16 @@ const PaymentItem = ({ payment }: any) => {
             </div>
           </div>
         </div>
+        <button
+          type="button"
+          className="btn btn-warning"
+          onClick={() => handelNav()}
+        >
+          Detail
+        </button>
       </td>
     </tr>
   );
 };
 
-export default PaymentItem;
+export default BlogItem;

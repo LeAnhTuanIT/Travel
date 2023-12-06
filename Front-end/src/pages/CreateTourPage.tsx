@@ -8,7 +8,16 @@ import { toast } from "react-toastify";
 import { isAdmin } from "../shared/GlobalFunction";
 import ErrorPage from "../components/Layout/ErrorPage";
 import { moneyFormatter } from "../shared/GlobalFunction";
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+
 const CreateTourPage = () => {
+
+const [value, setValue] = useState('');
+
+
   const { error, success } = useSelector((state: any) => state.tours);
   const formatter = moneyFormatter();
   const { user } = useSelector((state: any) => state.user);
@@ -53,7 +62,7 @@ const CreateTourPage = () => {
 
     if (
       name == "" ||
-      description == "" ||
+      value == "" ||
       destination == "" ||
       aim == "" ||
       price == "" ||
@@ -69,7 +78,7 @@ const CreateTourPage = () => {
     });
     newForm.append("name", name);
     newForm.append("destination", destination);
-    newForm.append("description", description);
+    newForm.append("description", value);
     newForm.append("aim", aim);
     newForm.append("price", price);
     newForm.append("country", country);
@@ -189,15 +198,7 @@ const CreateTourPage = () => {
           ))}
         </select>
 
-        <textarea
-          className="main-form-textarea"
-          id="description"
-          name="description"
-          cols={30}
-          rows={10}
-          placeholder="Messages"
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
+        <ReactQuill theme="snow" value={value} onChange={setValue} className="bg-white" />
 
         <label
           style={{ width: "fit-content", marginTop: "12px" }}

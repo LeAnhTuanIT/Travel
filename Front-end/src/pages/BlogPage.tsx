@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import Blog from "../components/Admin/Blog";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import ErrorPage from "../components/Layout/ErrorPage";
+import { isAdmin } from "../shared/GlobalFunction";
 
 const BlogPage = () => {
-  return (
+  const { user } = useSelector((state: any) => state.user);
+
+  return isAdmin(user) ? (
     <div>
-      {/* {blogPosts.map((post, index) => (
-        <div key={index}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-        </div>
-      ))} */}
+      <Blog></Blog>
     </div>
-  )
-}
+  ) : (
+    <ErrorPage></ErrorPage>
+  );
+};
 
-export default BlogPage
-
+export default BlogPage;

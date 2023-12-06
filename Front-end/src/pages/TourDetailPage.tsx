@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {faIcons} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import ListTour from "../components/Layout/ListTour";
@@ -19,9 +20,18 @@ import { toast } from "react-toastify";
 import { Form, ListGroup } from 'reactstrap';
 import "../assets/css/tourDetail.scss"
 import 'remixicon/fonts/remixicon.css';
-import { createReview } from "../redux/actions/review";
+import { createReviewTour } from "../redux/actions/review";
+
+
 
 const TourDetailPage = () => {
+
+
+  const [html, setHtml] = useState<string>("")
+  useEffect(() => {
+    setHtml(tour.description)
+  }, [html])
+
   const { user } = useSelector((state: any) => state.user);
   const formatter = moneyFormatter();
   let { id } = useParams();
@@ -128,8 +138,9 @@ const TourDetailPage = () => {
 
     console.log(tour._id)      
     console.log(data)
-    dispatch(createReview(data) as unknown as AnyAction);
+    dispatch(createReviewTour(data) as unknown as AnyAction);
     toast.success("Rating success !!");
+    window.location.reload();
   }
 
 
@@ -158,13 +169,16 @@ const TourDetailPage = () => {
               <div className="item-feature-header text-capitalize">
                 {tour.continent}
               </div>
-              <div className="item-feature-sub">{tour.country}</div>
+              <div className="item-feature-header text-uppercase">{tour.country}</div>
+              <div className="item-feature-sub">
+              Lorem ipsum dolor sit amet, consec dolor sit amet anis po.
+              </div>
             </div>
           </div>
             
           <div className="item-feature-content">
             <FontAwesomeIcon
-              icon={faLocationDot}
+              icon={faIcons}
               style={{ backgroundColor: `#${tour.color}` }}
               className="item-feature-icon"
             />
@@ -193,7 +207,9 @@ const TourDetailPage = () => {
         <div className="item-content-container container">
           <div className="item-content-main mt-8 m-10">
             <div className="item-content-detail">
-              <div className="item-content-text">{tour.description}</div>
+              {/* <div className="item-content-text">{parse}</div> */}
+              <div className="item-content-text" dangerouslySetInnerHTML={{__html: html}}></div>
+
             </div>
 
             <div className="item-content-view">
@@ -262,8 +278,8 @@ const TourDetailPage = () => {
                       <img
                         src={`${image}`}
                         alt=""
-                        width={250}
-                        height={400}
+                        width={200}
+                        height={200}
                         className="bg-image"
                       />
                     ))
@@ -355,16 +371,6 @@ const TourDetailPage = () => {
                   placeholder="Quantity"
                 />
 
-                {/* <textarea
-                  className="main-form-textarea"
-                  name=""
-                  id=""
-                  cols={30}
-                  rows={10}
-                  placeholder="Descriptions"
-                  value={description}
-                  onChange={(e: any) => setDescription(e.target.value)}
-                ></textarea> */}
                 <div className="d-flex justify-content-between">
                   <h6 className="text-white">Price: </h6>
                   <h6 className="text-white">

@@ -5,9 +5,9 @@ export interface BlogDocument extends Document {
     description: String;
     content: String;
     images: String[];
+    reviews: mongoose.Types.ObjectId[],
     user: Object;
-    tour: Object;
-    status: Boolean;
+    status: String;
     createAt: Date;
 }
 
@@ -34,14 +34,17 @@ const BlogSchema = new Schema<BlogDocument, BlogModel>({
     user: {
         type: Object,
     },
-    tour: {
-        type: Object,
-        required: true,
-    },
     status: {
-        type: Boolean,
-        default: false,
+        type: String,
+        required: [true, "Please enter status"],
     },
+    reviews: [
+        {
+          type: mongoose.Types.ObjectId,
+          ref: "Review",
+          required: true
+       },
+      ],
     createAt: {
         type: Date,
         default: Date.now(),

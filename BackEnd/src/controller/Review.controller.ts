@@ -4,10 +4,11 @@ import ErrorHandler from "../utils/ErrorHandler.utils";
 import Tour from "../model/Tour.model";
 import User from "../model/User.model";
 import Review from "../model/Review.model";
+import Blog from "../model/Blog.model";
 
 const router = express.Router();
 
-router.post("/create-review", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+router.post("/create-review-tour", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
         
         const reviewData = req.body;
@@ -21,13 +22,13 @@ router.post("/create-review", asyncMiddleware(async (req: any, res: Response, ne
         }
         const createReview = await Review.create(ReviewData);
 
-        const SummitTour = await Tour.findByIdAndUpdate(tour?._id, {
+        const SubmitTour = await Tour.findByIdAndUpdate(tour?._id, {
             $push: {reviews: createReview._id}
         })
 
-        console.log(SummitTour);
+        console.log(SubmitTour);
 
-        if(!SummitTour) {
+        if(!SubmitTour) {
             res.status(500).json({
                 success: false,
                 message: "error comment",
@@ -38,7 +39,46 @@ router.post("/create-review", asyncMiddleware(async (req: any, res: Response, ne
         res.status(201).json({
             success: true,
             message: "Review summited",
-            data: SummitTour
+            data: SubmitTour
+        })
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
+
+
+router.post("/create-review-blog", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+    try {
+        
+        const reviewData = req.body;
+        const user = await User.findById(reviewData.userId);
+        const blog = await Blog.findById(reviewData.blogId);
+
+        const ReviewData = {
+            rating: reviewData.rating,
+            comments: reviewData.comments,
+            user: user,
+        }
+        const createReview = await Review.create(ReviewData);
+
+        const SubmitBlog = await Blog.findByIdAndUpdate(blog?._id, {
+            $push: {reviews: createReview._id}
+        })
+
+        console.log(SubmitBlog);
+
+        if(!SubmitBlog) {
+            res.status(500).json({
+                success: false,
+                message: "error comment",
+                data: reviewData
+            })
+
+        }
+        res.status(201).json({
+            success: true,
+            message: "Review summited",
+            data: SubmitBlog
         })
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));

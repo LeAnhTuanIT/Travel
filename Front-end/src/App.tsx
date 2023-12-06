@@ -22,6 +22,8 @@ import {
   UpdateTourPage,
   BlogPage,
   BlogDetailPage,
+  BlogAdmin,
+  CreateBlog,
 } from "./Routes";
 import { ToastContainer } from "react-toastify";
 import Store from "./redux/store";
@@ -56,11 +58,14 @@ function App() {
                 element={<ActivationPage />}
               ></Route>
 
+
+              <Route path="/admin/blog" element={<BlogAdmin />}></Route>
               <Route path="/admin/payments" element={<DashBoardPage />}></Route>
               <Route path="/admin/chart" element={<ChartPage />}></Route>
               <Route path="/search-tours" element={<SearchToursPage />}></Route>
               <Route path="/tour-dashboard" element={<TourPage />}></Route>
               <Route path="/create-tour" element={<CreateTourPage />}></Route>
+              <Route path="/create-blog" element={<CreateBlog />}></Route>
               <Route path="/update-user" element={<UpdateUserPage />}></Route>
               <Route path="/blog-page" element={<BlogPage/>}></Route>
               <Route path="/blog-detail/:id" element={<BlogDetailPage />}></Route>

@@ -12,6 +12,8 @@ import ChartPage from './pages/ChartPage'
 import UpdateTourPage from './pages/UpdateTourPage'
 import BlogDetailPage from "./pages/BlogDetailPage";
 import BlogPage from "./pages/BlogPage";
+import BlogAdmin from "./pages/BlogAdmin";
+import CreateBlog from "./pages/CreateBlog";
 export {
   LoginPage,
   SignUpPage,
@@ -26,5 +28,7 @@ export {
   ChartPage,
   UpdateTourPage,
   BlogPage,
-  BlogDetailPage
+  BlogDetailPage,
+  BlogAdmin,
+  CreateBlog
 };

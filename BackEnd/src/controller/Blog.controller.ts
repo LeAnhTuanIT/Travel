@@ -8,7 +8,7 @@ import {upload} from "../utils/Multer.utils";
 
 const router = express.Router();
 
-router.post("/create-blog",upload.array("Images"), asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
+router.post("/create-blog",upload.array("images"), asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
         const blogdata = req.body;
         const files = req.files;
@@ -17,20 +17,14 @@ router.post("/create-blog",upload.array("Images"), asyncMiddleware(async (req: a
         });
 
         const userId = req.params.userId;
-        const tourId = req.params.tourId;
-        
-
         const user = await User.findOne({userId});
-
-        const tour = await Tour.findOne({tourId});
-
         const BlogData = {
             title: blogdata.title,
             description: blogdata.description,
             content: blogdata.content,
             user: user,
             images: ImagesUrl,
-            tour: tour,
+            status: '1',
         }
         console.log(blogdata)
         const createReview = await Blog.create(BlogData);
@@ -47,7 +41,7 @@ router.post("/create-blog",upload.array("Images"), asyncMiddleware(async (req: a
         res.status(201).json({
             success: true,
             message: "Review summited",
-            data: BlogData
+            blog: createReview
         })
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
@@ -74,7 +68,6 @@ router.put("/update-blog",upload.array("images"), asyncMiddleware(async (req: an
             content: req.body.content,
             user: user,
             images: req.body.images,
-            tour: req.body.tour,
         }
         const updateBlog = await Blog.findByIdAndUpdate(blogId, blogData, {
             new: true,
@@ -84,7 +77,7 @@ router.put("/update-blog",upload.array("images"), asyncMiddleware(async (req: an
         res.status(200).json({
             success: true,
             message: "Blog updated",
-            data: updateBlog,
+            blog: updateBlog,
         })
     }
    
@@ -115,8 +108,11 @@ router.delete("/delete-blog/:id", asyncMiddleware(async (req: any, res: Response
 // Get blog by id
 router.get("/get-blog/:id", asyncMiddleware(async (req: any, res: Response, next: NextFunction) => {
     try {
-        const blogId = req.params.id;
-        const blog = await Blog.findById(blogId);
+        const id = req.params.id;
+        const blog = (await Blog.findById({_id: id}).populate({
+            path: "reviews",
+            options: { strictPopulate: false },
+          }));
         if(!blog) {
             res.status(404).json({
                 success: false,
@@ -127,7 +123,7 @@ router.get("/get-blog/:id", asyncMiddleware(async (req: any, res: Response, next
             res.status(200).json({
                 success: true,
                 message: "get blog",
-                data: blog,
+                blog: blog,
             })
         }
     } catch (error: any) {
@@ -138,16 +134,67 @@ router.get("/get-blog/:id", asyncMiddleware(async (req: any, res: Response, next
 // Get all blog
 router.get("/get-all-blog", asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const blog = await Blog.find();
+        const blogs = (await Blog.find({}).populate({
+            path: "reviews",
+            options: { strictPopulate: false },
+          }));
         res.status(200).json({
             success: true,
             message: "get blog",
-            data: blog,
+            blogs: blogs,
         })
     } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
     }
 }))
+
+router.put(
+    '/paid/:id',
+    asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const id = req.params.id;
+        console.log(id);
+  
+        const blog = await Blog.findByIdAndUpdate({ _id: id },
+            {
+              status: '2',
+            }
+          );
+  
+        console.log(blog);
+        res.status(200).json({
+          success: true,
+        });
+      } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+      }
+    })
+  );
+  
+  router.put(
+    '/cancel/:id',
+    asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const id = req.params.id;
+        console.log(id);
+  
+        const blog = await Blog.findByIdAndUpdate({ _id: id },
+          {
+            status: '0',
+          }
+        );
+  
+        console.log(blog);
+        res.status(200).json({
+          success: true,
+        });
+      } catch(error: any) {
+        return next(new ErrorHandler(error.message, 400));
+      }
+    })
+  );
+
+
 
 
 module.exports = router;

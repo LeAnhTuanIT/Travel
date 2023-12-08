@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-
+import parse from 'html-react-parser';
 import React, { useEffect, useState, useRef } from "react";
 import { Form, ListGroup } from 'reactstrap';
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
@@ -131,7 +131,7 @@ const BlogDetailPage = () => {
         <div className="item-content-container container">
           <div className="item-content-main mt-8 m-10">
             <div className="item-content-detail">
-              <div className="item-content-text">{blog.description}</div>
+              <div className="item-content-text" dangerouslySetInnerHTML={{__html: html}}></div>
             </div>
 
             <div className="item-content-view">

@@ -26,7 +26,7 @@ import { createReviewTour } from "../redux/actions/review";
 
 const TourDetailPage = () => {
 
-
+  
   const [html, setHtml] = useState<string>("")
   useEffect(() => {
     setHtml(tour.description)
@@ -43,6 +43,9 @@ const TourDetailPage = () => {
   const { tour, tours, isLoading, redirectUrl } = useSelector(
     (state: any) => state.tours
   );
+  console.log(tours)
+  console.log(tour)
+
 
   const [tourRating, setTourRating] = useState(0);
   const depositPrice = (tour.price * quantity * 20) / 100;
@@ -215,6 +218,29 @@ const TourDetailPage = () => {
             <div className="item-content-view">
               <div className="item-view-head">VIEW THE PHOTOS</div>
             </div>
+            <div className="item-view-container">
+              <Slider {...settings} className="item-img-container">
+                {tour.images
+                  ? tour.images.map((image: any) => (
+                      <img
+                        src={`${image}`}
+                        alt=""
+                        width={200}
+                        height={200}
+                        className="bg-image"
+                      />
+                    ))
+                  : null}
+              </Slider>
+
+              <div className="item-view-choice ">
+                <span className="item-choice-img view-active">
+                  TOUR GALLERY
+                </span>
+                <span className="item-choice-img">TOUR MAP</span>
+              </div>
+            </div>
+            <div className="item-view-head mt-2 mb-4">Review Of User</div>
             <Form onSubmit={handleRatingSubmit}>
                     <div className="d-flex align-items-center gap-3 mb-4 rating__group">
                       <span onClick={() => setTourRating(1)}>
@@ -271,28 +297,7 @@ const TourDetailPage = () => {
                       </div>
                     ))}
                   </ListGroup>
-            <div className="item-view-container">
-              <Slider {...settings} className="item-img-container">
-                {tour.images
-                  ? tour.images.map((image: any) => (
-                      <img
-                        src={`${image}`}
-                        alt=""
-                        width={200}
-                        height={200}
-                        className="bg-image"
-                      />
-                    ))
-                  : null}
-              </Slider>
-
-              <div className="item-view-choice ">
-                <span className="item-choice-img view-active">
-                  TOUR GALLERY
-                </span>
-                <span className="item-choice-img">TOUR MAP</span>
-              </div>
-            </div>
+            
             <ListTourX
               className="flex-3"
               data={tours.length != 0 ? tours.slice(0, 3) : []}
@@ -307,7 +312,7 @@ const TourDetailPage = () => {
               </div>
               <div className="item-contact-expert">
                 <img
-                  src="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/wp-content/uploads/sites/2/2018/03/testimonial-1.jpg"
+                  src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/user.jpg"
                   alt=""
                   className="item-contact-img"
                 />
@@ -390,7 +395,7 @@ const TourDetailPage = () => {
                   <div className="item-promotion-sale">SALE</div>
                   <img
                     className="item-promotion-img"
-                    src="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/wp-content/uploads/sites/2/2018/03/package-newdelhi-150x150.jpg"
+                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/newdelhi.jpg"
                     alt=""
                   />
                 </div>
@@ -405,7 +410,7 @@ const TourDetailPage = () => {
                 <div className="item-promotion-container-img">
                   <img
                     className="item-promotion-img"
-                    src="http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/wp-content/uploads/sites/2/2018/03/package-rome-150x150.jpg"
+                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/rome.jpg"
                     alt=""
                   />
                 </div>

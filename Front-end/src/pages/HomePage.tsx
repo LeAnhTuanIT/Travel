@@ -21,6 +21,7 @@ import { getAllTours, getPDF, getTourByName } from "../redux/actions/tour";
 import { AnyAction } from "redux";
 import axios from 'axios';
 import { server } from "../server";
+import Newsletter from "../components/Layout/Newsletter";
 
 const HomePage = () => {
   const settings = {
@@ -275,7 +276,7 @@ const HomePage = () => {
           className="main-middle-image"
           style={{
             backgroundImage:
-              "url(http://www.nicdarkthemes.com/themes/travel/wp/demo/travel/wp-content/uploads/sites/2/2018/03/parallax-1.jpg)",
+              "url(https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/background-img.jpg)",
           }}
         ></div>
 
@@ -371,6 +372,10 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="">
+        <Newsletter/>
       </div>
 
       <div className="main-footer ">

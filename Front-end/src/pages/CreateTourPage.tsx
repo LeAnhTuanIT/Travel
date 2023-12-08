@@ -9,6 +9,8 @@ import { isAdmin } from "../shared/GlobalFunction";
 import ErrorPage from "../components/Layout/ErrorPage";
 import { moneyFormatter } from "../shared/GlobalFunction";
 
+import {format, modules} from "../components/Layout/ReactQuill"
+
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -198,7 +200,13 @@ const [value, setValue] = useState('');
           ))}
         </select>
 
-        <ReactQuill theme="snow" value={value} onChange={setValue} className="bg-white" />
+        <ReactQuill 
+          theme="snow" 
+          value={value} 
+          onChange={setValue} 
+          className="bg-white"
+          modules={modules}
+          formats={format} />
 
         <label
           style={{ width: "fit-content", marginTop: "12px" }}

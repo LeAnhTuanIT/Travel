@@ -91,10 +91,7 @@ const BlogDetailPage = () => {
             }")`,
           }}
         >
-          <span className="item-header-text">{blog.title}</span>
-        </div>
-
-        {/* <div className=" item-feature container">
+          <div className=" item-feature container">
           <div className="item-feature-content">
             <FontAwesomeIcon
               icon={faLocationDot}
@@ -124,7 +121,11 @@ const BlogDetailPage = () => {
               </div>
             </div>
           </div>
-      </div> */}
+      </div>
+          <span className="item-header-text">{blog.title}</span>
+        </div>
+
+        
 
       
       <div className="item-content" style={{ marginBottom: "60px" }}>

@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import {faIcons} from "@fortawesome/free-solid-svg-icons";
+import { faIcons } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import ListTour from "../components/Layout/ListTour";
@@ -17,20 +17,16 @@ import { useParams } from "react-router-dom";
 // import { backend_url, server } from "../server";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Form, ListGroup } from 'reactstrap';
-import "../assets/css/tourDetail.scss"
-import 'remixicon/fonts/remixicon.css';
+import { Form, ListGroup } from "reactstrap";
+import "../assets/css/tourDetail.scss";
+import "remixicon/fonts/remixicon.css";
 import { createReviewTour } from "../redux/actions/review";
 
-
-
 const TourDetailPage = () => {
-
-  
-  const [html, setHtml] = useState<string>("")
+  const [html, setHtml] = useState<string>("");
   useEffect(() => {
-    setHtml(tour.description)
-  }, [html])
+    setHtml(tour.description);
+  }, [html]);
 
   const { user } = useSelector((state: any) => state.user);
   const formatter = moneyFormatter();
@@ -43,9 +39,8 @@ const TourDetailPage = () => {
   const { tour, tours, isLoading, redirectUrl } = useSelector(
     (state: any) => state.tours
   );
-  console.log(tours)
-  console.log(tour)
-
+  console.log(tours);
+  console.log(tour);
 
   const [tourRating, setTourRating] = useState(0);
   const depositPrice = (tour.price * quantity * 20) / 100;
@@ -57,10 +52,9 @@ const TourDetailPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
     dispatch(getAllTours() as unknown as AnyAction);
   }, [dispatch]);
-
 
   const settings = {
     infinite: true,
@@ -107,31 +101,30 @@ const TourDetailPage = () => {
       userId: user ? user._id : null,
       quantity: quantity,
     };
-    console.log(tour._id)
-    console.log(data)
+    console.log(tour._id);
+    console.log(data);
     dispatch(createPaymentUrl(data) as unknown as AnyAction);
   }
-
 
   const reviewsMsgRef = useRef<HTMLInputElement>(null);
 
   function handleRatingSubmit(e: any) {
     e.preventDefault();
-    if(!tourRating || tourRating <= 0 || tourRating > 5) {
+    if (!tourRating || tourRating <= 0 || tourRating > 5) {
       toast.error("Please enter your rating !!");
       return;
     }
 
-    if(user._id == null) {
+    if (user._id == null) {
       toast.error("Please login to rating !!");
       return;
     }
 
-    if(!reviewsMsgRef.current?.value|| undefined) {
+    if (!reviewsMsgRef.current?.value || undefined) {
       toast.error("Please enter your comment !!");
       return;
     }
-    
+
     const data = {
       rating: tourRating,
       comments: reviewsMsgRef.current.value,
@@ -139,13 +132,12 @@ const TourDetailPage = () => {
       userId: user._id,
     };
 
-    console.log(tour._id)      
-    console.log(data)
+    console.log(tour._id);
+    console.log(data);
     dispatch(createReviewTour(data) as unknown as AnyAction);
     toast.success("Rating success !!");
     window.location.reload();
   }
-
 
   return tour ? (
     <>
@@ -153,9 +145,7 @@ const TourDetailPage = () => {
         <div
           className="main-middle-image"
           style={{
-            backgroundImage: `url("${
-              tour.images ? tour?.images[0] : null
-            }")`,
+            backgroundImage: `url("${tour.images ? tour?.images[0] : null}")`,
           }}
         >
           <span className="item-header-text">{tour.name}</span>
@@ -172,13 +162,15 @@ const TourDetailPage = () => {
               <div className="item-feature-header text-capitalize">
                 {tour.continent}
               </div>
-              <div className="item-feature-header text-uppercase">{tour.country}</div>
+              <div className="item-feature-header text-uppercase">
+                {tour.country}
+              </div>
               <div className="item-feature-sub">
-              Lorem ipsum dolor sit amet, consec dolor sit amet anis po.
+                Lorem ipsum dolor sit amet, consec dolor sit amet anis po.
               </div>
             </div>
           </div>
-            
+
           <div className="item-feature-content">
             <FontAwesomeIcon
               icon={faIcons}
@@ -194,7 +186,7 @@ const TourDetailPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div
             style={{ backgroundColor: `#${tour.color}` }}
             className="item-feature-price"
@@ -205,14 +197,15 @@ const TourDetailPage = () => {
         </div>
       </div>
 
-      
       <div className="item-content" style={{ marginBottom: "40px" }}>
         <div className="item-content-container container">
           <div className="item-content-main mt-8 m-10">
             <div className="item-content-detail">
               {/* <div className="item-content-text">{parse}</div> */}
-              <div className="item-content-text" dangerouslySetInnerHTML={{__html: html}}></div>
-
+              <div
+                className="item-content-text"
+                dangerouslySetInnerHTML={{ __html: html }}
+              ></div>
             </div>
 
             <div className="item-content-view">
@@ -242,66 +235,64 @@ const TourDetailPage = () => {
             </div>
             <div className="item-view-head mt-2 mb-4">Review Of User</div>
             <Form onSubmit={handleRatingSubmit}>
-                    <div className="d-flex align-items-center gap-3 mb-4 rating__group">
-                      <span onClick={() => setTourRating(1)}>
-                        1 <i className="ri-star-fill start"></i>
-                      </span>
-                      <span onClick={() => setTourRating(2)}>
-                        2 <i className="ri-star-fill start"></i>
-                      </span>
-                      <span onClick={() => setTourRating(3)}>
-                        3 <i className="ri-star-fill start"></i>
-                      </span>
-                      <span onClick={() => setTourRating(4)}>
-                        4 <i className="ri-star-fill start"></i>
-                      </span>
-                      <span onClick={() => setTourRating(5)}>
-                        5 <i className="ri-star-fill start"></i>
-                      </span>
-                    </div>
-                    <div className="reviews__input">
-                      <input
-                        type="text"
-                        placeholder="share your thoughts"
-                        ref={reviewsMsgRef}
-                        required
-                      />
-                      <button className="btn primary__btn" type="submit">
-                        Submit
-                      </button>
-                    </div>
+              <div className="d-flex align-items-center gap-3 mb-4 rating__group">
+                <span onClick={() => setTourRating(1)}>
+                  1 <i className="ri-star-fill start"></i>
+                </span>
+                <span onClick={() => setTourRating(2)}>
+                  2 <i className="ri-star-fill start"></i>
+                </span>
+                <span onClick={() => setTourRating(3)}>
+                  3 <i className="ri-star-fill start"></i>
+                </span>
+                <span onClick={() => setTourRating(4)}>
+                  4 <i className="ri-star-fill start"></i>
+                </span>
+                <span onClick={() => setTourRating(5)}>
+                  5 <i className="ri-star-fill start"></i>
+                </span>
+              </div>
+              <div className="reviews__input">
+                <input
+                  type="text"
+                  placeholder="share your thoughts"
+                  ref={reviewsMsgRef}
+                  required
+                />
+                <button className="btn primary__btn" type="submit">
+                  Submit
+                </button>
+              </div>
             </Form>
 
             <ListGroup className="user__reviews">
-                    {tour.reviews?.map((review: any, index: any) => (
-                      <div className="reviews__item" key={index}>
-                        <img src={review.user.avatar} alt="" className="img-review"/>
+              {tour.reviews?.map((review: any, index: any) => (
+                <div className="reviews__item" key={index}>
+                  <img src={review.user.avatar} alt="" className="img-review" />
 
-                        <div className="w-100">
-                          <div
-                            className="d-flex align-items-center 
+                  <div className="w-100">
+                    <div
+                      className="d-flex align-items-center 
                           justify-content-between"
-                          >
-                            <div>
-                              <h5>{review.user.name}</h5>
-                              <p>
-                                {review.createAt.toString().substring(0, 10)}
-                              </p>
-                            </div>
-                            <span className="d-flex align-items-center">
-                              {review.rating} <i className="ri-star-fill"></i>
-                            </span>
-                          </div>
-                          <h6>{review.comments}</h6>
-                        </div>
+                    >
+                      <div>
+                        <h5>{review.user.name}</h5>
+                        <p>{review.createAt.toString().substring(0, 10)}</p>
                       </div>
-                    ))}
-                  </ListGroup>
-            
+                      <span className="d-flex align-items-center">
+                        {review.rating} <i className="ri-star-fill"></i>
+                      </span>
+                    </div>
+                    <h6>{review.comments}</h6>
+                  </div>
+                </div>
+              ))}
+            </ListGroup>
+
             <ListTourX
               className="flex-3"
               data={tours.length != 0 ? tours.slice(0, 3) : []}
-              ></ListTourX>
+            ></ListTourX>
           </div>
 
           <div className="item-content-contact mt-4 m-9">
@@ -343,7 +334,6 @@ const TourDetailPage = () => {
                   disabled={user}
                   placeholder="Name"
                   onChange={(e) => setName(e.target.value)}
-
                 />
                 <input
                   style={{ margin: "20px 0" }}
@@ -395,7 +385,7 @@ const TourDetailPage = () => {
                   <div className="item-promotion-sale">SALE</div>
                   <img
                     className="item-promotion-img"
-                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/newdelhi.jpg"
+                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/uploads/package-newdelhi-150x150.jpg"
                     alt=""
                   />
                 </div>
@@ -410,7 +400,7 @@ const TourDetailPage = () => {
                 <div className="item-promotion-container-img">
                   <img
                     className="item-promotion-img"
-                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/rome.jpg"
+                    src="https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/uploads/package-rome-150x150.jpg"
                     alt=""
                   />
                 </div>

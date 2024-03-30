@@ -19,7 +19,7 @@ import { aimData, destinationData, countryData } from "../static/data";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTours, getPDF, getTourByName } from "../redux/actions/tour";
 import { AnyAction } from "redux";
-import axios from 'axios';
+import axios from "axios";
 import { server } from "../server";
 import Newsletter from "../components/Layout/Newsletter";
 
@@ -93,8 +93,8 @@ const HomePage = () => {
   const handleSearchChange = (e: any) => {
     const term = e.target.value;
     setKeyword(term);
-  
-    if (term !== '') {
+
+    if (term !== "") {
       axios
         .get(`${server}/tour/search/${term}`) // Gửi yêu cầu GET đến API endpoint với từ khóa tìm kiếm
         .then((response) => {
@@ -260,7 +260,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <ListTour data={data.length ? data : tours.slice(0,6)}></ListTour>
+      <ListTour data={data.length ? data : tours.slice(0, 6)}></ListTour>
 
       <div className="main-container-more">
         <Link to="/search-tours" className="main-more-big">
@@ -276,7 +276,7 @@ const HomePage = () => {
           className="main-middle-image"
           style={{
             backgroundImage:
-              "url(https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/Travel_img/background-img.jpg)",
+              "url(https://travel-my-uploads.s3.ap-southeast-1.amazonaws.com/uploads/parallax-3.jpg)",
           }}
         ></div>
 
@@ -375,7 +375,7 @@ const HomePage = () => {
       </div>
 
       <div className="">
-        <Newsletter/>
+        <Newsletter />
       </div>
 
       <div className="main-footer ">
@@ -432,7 +432,11 @@ const HomePage = () => {
                 placeholder="Messages"
               ></textarea>
 
-              <button type="submit" onClick={() => dispatch(getPDF())} className="main-footer-btn">
+              <button
+                type="submit"
+                onClick={() => dispatch(getPDF())}
+                className="main-footer-btn"
+              >
                 SEND NOW
               </button>
             </div>
